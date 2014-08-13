@@ -462,6 +462,8 @@ resources:
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
                    "recipe[drupal]",
+                   "recipe[rax-drupal::user]",
+                   "recipe[rax-drupal::lsyncd]",
                    "recipe[sysctl::attribute_driver]",
                    "recipe[rax-firewall]"]
 
