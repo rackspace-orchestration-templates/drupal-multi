@@ -1,6 +1,7 @@
 # coding: utf-8
 
 include_recipe 'lsyncd'
+include_recipe 'rax-drupal::user'
 
 if node['rax']['lsyncd']['ssh']['private_key']
 
