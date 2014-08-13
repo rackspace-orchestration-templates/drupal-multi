@@ -452,7 +452,7 @@ resources:
           site:
             admin: { get_param: username }
             pass: { get_attr: [database_password, value] }
-            host: 'local'
+            host: '10.%'
         mysql:
           server_root_password: { get_attr: [mysql_root_password, value] }
         rax:
