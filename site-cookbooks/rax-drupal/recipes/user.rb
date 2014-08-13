@@ -40,12 +40,12 @@ execute 'Setup the various Drupal file system permissions' do
   command <<-EOH
   # Give permissions to the entire directory Drupal install to the Drupal user
   chown -R \
-  #{node['rax']['drupal']['user']}:#{node['rax']['drupal']['user']['group']} \
+  #{node['rax']['drupal']['user']}:#{node['rax']['drupal']['group']} \
   #{node['drupal']['dir']}
 
   chmod 664 #{File.join(node['drupal']['dir'], 'sites/default/settings.php')}
 
-  # Set wp-content permissions
+  # Set files permissions
   chown -R \
   #{node['rax']['drupal']['user']}:#{node['apache']['group']} \
   #{File.join(node['drupal']['dir'], 'sites/default/files/')}
@@ -60,4 +60,3 @@ execute 'Setup the various Drupal file system permissions' do
   EOH
   action :run
 end
-
