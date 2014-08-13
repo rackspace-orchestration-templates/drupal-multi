@@ -36,3 +36,23 @@ if node['drupal']['site']['host'] == "localhost"
 else
   include_recipe "mysql::client"
 end
+
+if node['rax']['lsyncd']['ssh']['pub'] do
+  include_recipe 'rax-drupal::user'
+
+  directory File.join(node['drupal']['dir'], '.ssh') do
+    owner node['rax']['drupal']['user']
+    group node['rax']['drupal']['group']
+    mode 0700
+    action :create
+    recursive true
+  end
+
+  file File.join(node['drupal']['dir'], '.ssh', 'authorized_keys') do
+    content node['rax']['lsyncd']['ssh']['pub']
+    owner node['rax']['drupal']['user']
+    group node['rax']['drupal']['group']
+    mode 0644
+    action :create
+  end
+end
