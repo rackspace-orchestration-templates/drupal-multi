@@ -58,5 +58,6 @@ execute 'Setup the various Drupal file system permissions' do
 
   chmod 2775 #{File.join(node['drupal']['dir'], 'sites/default/files/')}
   EOH
+  only_if { File.exist?(File.join(node['drupal']['dir'], 'sites/default/settings.php')) }
   action :run
 end
