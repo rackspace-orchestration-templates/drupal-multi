@@ -29,8 +29,7 @@ Parameters
 Parameters can be replaced with your own values when standing up a stack. Use
 the `-P` flag to specify a custom parameter.
 
-* `username`: Username for system, database, and Drupal logins. (Default:
-  drupal)
+* `username`: Username for the Drupal admin login (Default: admin)
 * `master_server_hostname`: Hostname to use for your Drupal web-master server.
   (Default: Drupal-Master)
 * `image`: Required: Server image used for all servers that are created as a

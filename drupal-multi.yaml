@@ -226,9 +226,9 @@ parameters:
 
   username:
     label: Username
-    description: "Username for system, database, and Drupal logins."
+    description: "Username for the Drupal admin login"
     type: string
-    default: drupal
+    default: admin
     constraints:
     - allowed_pattern: "^(.){1,16}$"
       description: |
