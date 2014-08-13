@@ -35,3 +35,29 @@ group node['apache']['group'] do
   members node['rax']['drupal']['user']
   action :modify
 end
+
+execute 'Setup the various Drupal file system permissions' do
+  command <<-EOH
+  # Give permissions to the entire directory Drupal install to the Drupal user
+  chown -R \
+  #{node['rax']['drupal']['user']}:#{node['rax']['drupal']['user']['group']} \
+  #{node['drupal']['dir']}
+
+  chmod 664 #{File.join(node['drupal']['dir'], 'sites/default/settings.php')}
+
+  # Set wp-content permissions
+  chown -R \
+  #{node['rax']['drupal']['user']}:#{node['apache']['group']} \
+  #{File.join(node['drupal']['dir'], 'sites/default/files/')}
+
+  find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type d -print | \
+  xargs chmod 775
+
+  find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type f -print | \
+  xargs chmod 664
+
+  chmod 2775 #{File.join(node['drupal']['dir'], 'sites/default/files/')}
+  EOH
+  action :run
+end
+
