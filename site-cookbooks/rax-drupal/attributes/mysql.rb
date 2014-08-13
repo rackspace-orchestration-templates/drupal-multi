@@ -1,7 +1,7 @@
 # coding: utf-8
 #
 # Cookbook Name:: rax-drupal
-# Attribute:: user.rb
+# Attribute:: mysql.rb
 #
 # Copyright 2014
 #
@@ -18,5 +18,4 @@
 # limitations under the License.
 #
 
-default['rax']['drupal']['user'] = 'drupal'
-default['rax']['drupal']['group'] = node['apache']['group']
+default['rax']['mysql']['interface'] = 'eth1'
