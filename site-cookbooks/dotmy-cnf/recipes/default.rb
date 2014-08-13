@@ -4,7 +4,7 @@ template "/root/.my.cnf" do
   group "root"
   mode "0600"
   variables ({
-    :rootpasswd => node['mysql']['server_root_password']
+    :rootpasswd => node['mysql']['server_root_password'],
     :port => node['mysql']['port']
   })
 end
