@@ -12,3 +12,5 @@ cookbook 'hollandbackup',
   :git => 'https://github.com/brint/hollandbackup'
 cookbook 'rax-firewall',
   :git => 'https://github.com/brint/rax-firewall-cookbook'
+cookbook 'lsyncd',
+  :git => 'https://github.com/dgivens/chef-lsyncd'
