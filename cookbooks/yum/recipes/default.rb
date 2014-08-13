@@ -24,11 +24,10 @@ yum_globalconfig '/etc/yum.conf' do
   logfile node['yum']['main']['logfile']
   exactarch node['yum']['main']['exactarch']
   obsoletes node['yum']['main']['obsoletes']
-  proxy node['yum']['main']['proxy']
+  obsoletes node['yum']['main']['proxy']
   installonly_limit node['yum']['main']['installonly_limit']
   installonlypkgs node['yum']['main']['installonlypkgs']
   installroot node['yum']['main']['installroot']
   distroverpkg node['yum']['main']['distroverpkg']
-  releasever node['yum']['main']['releasever']
   action :create
 end
