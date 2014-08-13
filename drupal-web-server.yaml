@@ -136,8 +136,8 @@ resources:
             ssh:
               pub: { get_param: lsync_pub }
         run_list: ["recipe[apt]",
-                   "recipe[rax-drupal::websetup]",
                    "recipe[rax-drupal-dir]",
+                   "recipe[rax-drupal::websetup]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-firewall]"]
 
