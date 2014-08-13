@@ -31,11 +31,7 @@ when 'rhel', 'fedora'
   end
 end
 
-if node['drupal']['site']['host'] == "localhost"
-  include_recipe "mysql::server"
-else
-  include_recipe "mysql::client"
-end
+include_recipe "mysql::client"
 
 if node['rax']['lsyncd']['ssh']['pub']
   include_recipe 'rax-drupal::user'
@@ -55,4 +51,18 @@ if node['rax']['lsyncd']['ssh']['pub']
     mode 0644
     action :create
   end
+end
+
+web_app "drupal" do
+  template "drupal.conf.erb"
+  cookbook "drupal"
+  docroot node['drupal']['dir']
+  server_name server_fqdn
+  server_aliases node['fqdn']
+end
+
+execute "disable-default-site" do
+   command "sudo a2dissite default"
+   notifies :reload, "service[apache2]", :delayed
+   only_if do File.exists? "#{node['apache']['dir']}/sites-enabled/default" end
 end

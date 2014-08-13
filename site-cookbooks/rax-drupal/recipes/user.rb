@@ -36,27 +36,34 @@ group node['apache']['group'] do
   action :modify
 end
 
-execute 'Setup the various Drupal file system permissions' do
+execute 'Setup the various Drupal site directory permissions' do
   command <<-EOH
   # Give permissions to the entire directory Drupal install to the Drupal user
   chown -R \
   #{node['rax']['drupal']['user']}:#{node['rax']['drupal']['group']} \
   #{node['drupal']['dir']}
-
-  chmod 664 #{File.join(node['drupal']['dir'], 'sites/default/settings.php')}
-
-  # Set files permissions
-  chown -R \
-  #{node['rax']['drupal']['user']}:#{node['apache']['group']} \
-  #{File.join(node['drupal']['dir'], 'sites/default/files/')}
-
-  find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type d -print | \
-  xargs chmod 775
-
-  find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type f -print | \
-  xargs chmod 664
-
-  chmod 2775 #{File.join(node['drupal']['dir'], 'sites/default/files/')}
   EOH
   action :run
+end
+
+if File.exist?(File.join(node['drupal']['dir'], 'sites/default/settings.php'))
+  execute 'Setup the various Drupal file system permissions' do
+    command <<-EOH
+    chmod 664 #{File.join(node['drupal']['dir'], 'sites/default/settings.php')}
+
+    # Set files permissions
+    chown -R \
+    #{node['rax']['drupal']['user']}:#{node['apache']['group']} \
+    #{File.join(node['drupal']['dir'], 'sites/default/files/')}
+
+    find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type d -print | \
+    xargs chmod 775
+
+    find #{File.join(node['drupal']['dir'], 'sites/default/files/')} -type f -print | \
+    xargs chmod 664
+
+    chmod 2775 #{File.join(node['drupal']['dir'], 'sites/default/files/')}
+    EOH
+    action :run
+  end
 end
