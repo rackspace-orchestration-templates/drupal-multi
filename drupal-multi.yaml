@@ -12,9 +12,9 @@ parameter_groups:
 
 - label: Web Server Settings
   parameters:
-  - drupal_master_server_flavor
-  - drupal_web_server_count
-  - drupal_web_server_flavor
+  - master_server_flavor
+  - web_server_count
+  - web_server_flavor
 
 - label: Database Settings
   parameters:
@@ -37,8 +37,8 @@ parameter_groups:
   - version
   - prefix
   - load_balancer_hostname
-  - drupal_web_server_hostnames
-  - drupal_master_server_hostname
+  - web_server_hostnames
+  - master_server_hostname
   - database_server_hostname
 
 parameters:
@@ -70,7 +70,7 @@ parameters:
       description: |
         Must begin with a letter and contain only alphanumeric characters.
 
-  drupal_master_server_hostname:
+  master_server_hostname:
     label: Server Name
     description: Hostname to use for your Drupal web-master server.
     type: string
@@ -83,7 +83,7 @@ parameters:
       description: |
         Must begin with a letter and contain only alphanumeric characters.
 
-  drupal_web_server_hostnames:
+  web_server_hostnames:
     label: Server Name
     description: Hostname to use for all additional Drupal web nodes
     type: string
@@ -96,7 +96,7 @@ parameters:
       description: |
         Must begin with a letter and contain only alphanumeric characters.
 
-  drupal_web_server_count:
+  web_server_count:
     label: Web Server Count
     description: Number of web servers to deploy in addition to the web-master
     type: number
@@ -142,7 +142,7 @@ parameters:
         Must be a valid Rackspace Cloud Server flavor for the region you have
         selected to deploy into.
 
-  drupal_master_server_flavor:
+  master_server_flavor:
     label: Master Server Size
     description: |
       Cloud Server size to use for the web-master node. The size should be at
@@ -169,7 +169,7 @@ parameters:
         Must be a valid Rackspace Cloud Server flavor for the region you have
         selected to deploy into.
 
-  drupal_web_server_flavor:
+  web_server_flavor:
     label: Node Server Size
     description: |
       Cloud Server size to use on all of the additional web nodes.
@@ -214,22 +214,11 @@ parameters:
       - "6.33"
 
   # Database and system user configuration
-  prefix:
-    label: Drupal Prefix
-    description: Prefix to use for database table names.
-    type: string
-    default: drupal_
-    constraints:
-    - allowed_pattern: "^[0-9a-zA-Z$_]{0,10}$"
-      description: |
-        Prefix must be shorter than 10 characters, and can only include
-        letters, numbers, $, and/or underscores.
-
   database_name:
     label: Database Name
     description: Drupal database name
     type: string
-    default: drupal 
+    default: drupal
     constraints:
     - allowed_pattern: "^[0-9a-zA-Z$_]{1,64}$"
       description: |
@@ -240,7 +229,7 @@ parameters:
     label: Username
     description: "Username for system, database, and Drupal logins."
     type: string
-    default: drupal 
+    default: drupal
     constraints:
     - allowed_pattern: "^(.){1,16}$"
       description: |
@@ -295,31 +284,6 @@ resources:
     properties:
       length: 16
       sequence: lettersdigits
-
-  # Random strings for WP salting
-  drupal_auth:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 32
-      sequence: hexdigits
-
-  drupal_logged_in:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 32
-      sequence: hexdigits
-
-  drupal_nonce:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 32
-      sequence: hexdigits
-
-  drupal_secure_auth:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 32
-      sequence: hexdigits
 
   # SSH KEYS
   sync_key:
@@ -376,7 +340,7 @@ resources:
   drupal_master_server:
     type: "Rackspace::Cloud::Server"
     properties:
-      name: { get_param: drupal_master_server_hostname }
+      name: { get_param: master_server_hostname }
       flavor: { get_param: drupal_master_server_flavor }
       image: { get_param: image }
       key_name: { get_resource: ssh_key }
@@ -391,7 +355,7 @@ resources:
       resource_def:
         type: { get_param: child_template }
         properties:
-          drupal_web_server_hostname: { get_param: drupal_web_server_hostnames }
+          server_hostname: { get_param: web_server_hostnames }
           image: { get_param: image }
           drupal_web_server_flavor: { get_param: drupal_web_server_flavor }
           domain: { get_param: domain }
@@ -594,4 +558,3 @@ outputs:
   mysql_root_password:
     value: { get_attr: [mysql_root_password, value] }
     description: MySQL Root Password
-

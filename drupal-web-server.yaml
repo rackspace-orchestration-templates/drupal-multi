@@ -3,34 +3,13 @@ heat_template_version: 2013-05-23
 description: |
   This is a Heat template to deploy a single Linux server running Drupal.
 
-parameter_groups:
-
-- label: Server Settings
-  parameters:
-  - image
-  - flavor
-
-- label: Drupal Settings
-  parameters:
-  - domain
-  - username
-
-- label: rax-dev-params
-  parameters:
-  - server_hostname
-  - kitchen
-  - chef_version
-  - version
-  - prefix
-
 parameters:
-
   # Server settings
   server_hostname:
     label: Server Name
     description: Hostname to use for the server that's built.
     type: string
-    default: Drupal
+    default: Drupal-Web
     constraints:
     - length:
         min: 1
@@ -86,55 +65,30 @@ parameters:
     - allowed_pattern: "^[a-zA-Z0-9.-]{1,255}.[a-zA-Z]{2,15}$"
       description: Must be a valid domain name
 
-  version:
-    label: Drupal Version
-    description: Version of Drupal to install
+  drupal_dir:
     type: string
-    default: "7.31"
-    constraints:
-    - allowed_values:
-      - "7.31"
-      - "6.33"
+    description: "Directory Drupal will be installed in"
+
+  # Lsync config
+  lsync_pub:
+    type: string
+    description: Public key for lsync config
+
+  # SSH config
+  ssh_keypair_name:
+    type: string
+    description: Name of SSH keypair
+
+  ssh_private_key:
+    type: string
+    description: Private key for SSH
 
   # Database and system user configuration
-  prefix:
-    label: Database Prefix
-    description: Prefix to use for Drupal database tables
-    type: string
-    default: drupal_
-    constraints:
-    - allowed_pattern: "^[0-9a-zA-Z$_]{0,10}$"
-      description: |
-        Prefix must be shorter than 10 characters, and can only include
-        letters, numbers, $, and/or underscores.
-
-  database_name:
-    label: Database Name
-    description: Drupal database name
-    type: string
-    default: drupal
-    constraints:
-    - allowed_pattern: "^[0-9a-zA-Z$_]{1,64}$"
-      description: |
-        Maximum length of 64 characters, may only contain letters, numbers, and
-        underscores.
-
-  username:
-    label: Username
-    description: "Username for Drupal admin login"
-    type: string
-    default: drupal
-    constraints:
-    - allowed_pattern: "^(.){1,16}$"
-      description: |
-        Must be shorter than 16 characters, this is due to MySQL's maximum
-        username length.
-
   kitchen:
     label: Kitchen URL
     description: "URL for a git repo containing required cookbooks"
     type: string
-    default: https://github.com/rackspace-orchestration-templates/drupal-single.git
+    default: https://github.com/rackspace-orchestration-templates/drupal-multi.git
 
   chef_version:
     label: Chef Version
@@ -142,39 +96,11 @@ parameters:
     type: string
     default: 11.14.2
 
+  parent_stack_id:
+    type: string
+    description: Stack ID of the Parent Template
+
 resources:
-  # Random password generation
-  database_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_root_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_repl_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_debian_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  # SSH KEYS
-  ssh_key:
-    type: "OS::Nova::KeyPair"
-    properties:
-      name: { get_param: "OS::stack_id" }
-      save_private_key: true
-
   # Server resources
   drupal_server:
     type: "Rackspace::Cloud::Server"
@@ -182,9 +108,9 @@ resources:
       name: { get_param: server_hostname }
       flavor: { get_param: flavor }
       image: { get_param: image }
-      key_name: { get_resource: ssh_key }
+      key_name: { get_param: ssh_keypair_name }
       metadata:
-        rax-heat: { get_param: "OS::stack_id" }
+        rax-heat: { get_param: parent_stack_id }
 
   # Chef resources
   drupal_setup:
@@ -192,7 +118,7 @@ resources:
     depends_on: drupal_server
     properties:
       username: root
-      private_key: { get_attr: [ssh_key, private_key] }
+      private_key: { get_param: ssh_private_key }
       host: { get_attr: [drupal_server, accessIPv4] }
       kitchen: { get_param: kitchen }
       chef_version: { get_param: chef_version }
@@ -201,69 +127,21 @@ resources:
           timeout: 30
           serversignature: "Off"
           traceenable: "Off"
-        hollandbackup:
-          main:
-            backup_directory: "/var/lib/mysqlbackup"
-            mysqldump:
-              user: "root"
-              host: "localhost"
-              password: { get_attr: [mysql_root_password, value] }
-        mysql:
-          server_root_password: { get_attr: [mysql_root_password, value] }
-          server_repl_password: { get_attr: [mysql_repl_password, value] }
-          server_debian_password: { get_attr: [mysql_debian_password, value] }
-          remove_test_database: true
-          remove_anonymous_users: true
         drupal:
-          version: { get_param: version }
-          dir:
-            str_replace:
-              template: "/var/www/vhosts/%domain%"
-              params:
-                "%domain%": { get_param: domain }
-          db:
-            database: { get_param: database_name }
-            user: { get_param: username }
-            password: { get_attr: [database_password, value] }
-            host: "127.0.0.1"
-          site:
-            admin: { get_param: username }
-            pass: { get_attr: [database_password, value] }
+          dir: { get_param: drupal_dir }
         rax:
           firewall:
             tcp: [80]
+          lsyncd:
+            ssh:
+              pub: { get_param: lsync_pub }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
-                   "recipe[drupal]",
-                   "recipe[hollandbackup]",
-                   "recipe[hollandbackup::mysqldump]",
-                   "recipe[hollandbackup::main]",
-                   "recipe[hollandbackup::backupsets]",
-                   "recipe[hollandbackup::cron]",
-                   "recipe[rax-firewall]",
-                   "recipe[varnish::apt_repo]",
-                   "recipe[varnish]",
-                   "recipe[memcached]",
-                   "recipe[rax-drupal::varnish]",
-                   "recipe[rax-drupal::varnish-firewall]"]
+                   "recipe[rax-firewall]"]
 
 outputs:
-  private_key:
-    description: SSH Private Key
-    value: { get_attr: [ssh_key, private_key] }
-
-  server_ip:
-    description: Server IP
+  accessIPv4:
     value: { get_attr: [drupal_server, accessIPv4] }
 
-  drupal_user:
-    description: Drupal User
-    value: { get_param: username }
-
-  drupal_password:
-    description: Drupal Password
-    value: { get_attr: [database_password, value] }
-
-  mysql_root_password:
-    description: MySQL Root Password
-    value: { get_attr: [mysql_root_password, value] }
+  privateIPv4:
+    value: { get_attr: [drupal_server, privateIPv4] }
