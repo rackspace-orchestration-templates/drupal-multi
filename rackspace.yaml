@@ -1,0 +1,110 @@
+schema-version: 1.0.0
+application-family: CMS
+application-name: Drupal
+application-version: 7.31
+flavor: Multiple Linux servers
+flavor-weight: 1
+reach-info:
+  tattoo: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/drupal-tattoo.png
+  icon-20x20: https://0b5294b243620310a700-e388a7f3aba385a925111b1fc6f680d4.ssl.cf2.rackcdn.com/drupal-20x20.png
+  rackspace-supported: true
+hidden_outputs:
+  - private_key
+  - drupal_password
+  - mysql_root_password
+abstract: |
+  Multiple Linux servers with [Drupal](https://drupal.org/) installed with
+  [Apache](http://httpd.apache.org/) and
+  [Lsyncd](https://code.google.com/p/lsyncd/) balanced with a Cloud Load
+  Balancer. The database server will be deployed with [MySQL
+  5.5](http://www.mysql.com/).
+
+  This deployment is intended for development and production use cases
+  incurring medium to high traffic scenarios. It is highly scalable and is
+  appropriate for high traffic events.
+instructions: |
+  #### Getting Started
+  If you're new to Drupal, check out [Getting started with Drupal 7
+  administration](https://drupal.org/getting-started/7/admin) or [Getting
+  started with Drupal 6
+  administration](https://drupal.org/getting-started/6/admin). The getting
+  started document will help guide you through the initial steps of checking
+  your site's status, customizing your site's informaion, adding users, and
+  more!
+
+  #### Logging in via SSH
+  The private key provided in the passwords section can be used to login as
+  root via SSH. We have an article on how to use these keys with [Mac OS X and
+  Linux](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-private-key-on-linuxmac)
+  as well as [Windows using
+  PuTTY](http://www.rackspace.com/knowledge_center/article/logging-in-with-a-ssh-private-key-on-windows).
+
+  #### Details of Your Setup
+  This deployment was stood up using
+  [chef-solo](http://docs.opscode.com/chef_solo.html). Once the deployment is
+  up, chef will not run again, so it is safe to modify configurations.
+
+  A system user called 'drupal' has been created as a part of this deployment.
+  There is no password associated with this account. You will need to set a
+  password for this user if you'd like to use the account for transferring
+  content, backups, or other purposes. Since the account has no password, no
+  one will be able to login as this user until a password is set.
+
+  Drupal was installed using [Drush](http://drush.ws/about). Drupal is
+  installed into /var/www/drupal and served by
+  [Apache](http://httpd.apache.org/). The Apache configuration is in
+  /etc/apache2/sites-enabled/drupal.conf. Any changes to the configuration
+  would require a restart of Apache.
+
+  [Lsyncd](https://code.google.com/p/lsyncd/) has been in installed to sync
+  static content across the front end servers. All new content will be
+  published to the master node and then synced across with lsync to the other
+  web nodes. When uploading content while migrating a site, you'll only need to
+  upload the content to the master node. The configuration for lsync can be
+  found in /etc/lsyncd.
+
+  [MySQL](http://www.mysql.com/) is the database backend used in this
+  deployment. The MySQL root password is included in the password section of
+  this deployment. If you do lose the password, it is also available in
+  /root/.my.cnf on the database server itself. MySQL backups are performed
+  locally by [Holland](http://wiki.hollandbackup.org/). The backups will be
+  stored in /var/lib/mysqlbackup on the database server.
+
+  #### Updating Drupal
+  Drupal does provide community documentation on [how to
+  upgrade](https://drupal.org/upgrade) your installation of Drupal. There are
+  several steps involved with the upgrade process. First, make sure to backup
+  your site files and your database prior to taking any steps to replace the
+  core site files. There are number of other tutorials available on places like
+  YouTube that can also step you though the upgrade/update process. There is
+  not currently a way to perform these upgrades automatically through the admin
+  interface. Since you have selected the multi-server option, you will only
+  need to upgrade the master node, and lsync will take care of syncing
+  everything to the other web nodes.
+
+  #### Migrating an Existing Site
+  Moving a Drupal site can be both difficult and time consuming. Drupal Modules
+  such as the [Backup and Migrate
+  module](http://drupal.org/project/backup_migrate) can help you move your
+  database content. We recommend backing everything up on both the source and
+  destination locations before anything is done. The content you want to move
+  over will be in the 'sites' directory. If you're running a single Drupal
+  site, you may just need the content of 'sites/default/files' along with your
+  database. Be careful not to overwrite the settings.php file within your site.
+  It contains the database configuration for your site.
+
+  This deployment has all of the core drupal files in place, and their
+  permissions are properly set. Be careful with ownership and permissions as
+  you move things over. If you're unsure, check the original ownership and
+  permissions of the files in this deployment.
+
+  #### Additional Modules
+  There are over 22,000 modules that have been created by an enaged developer
+  community. The [modules](https://drupal.org/project/Modules) section on
+  Drupal's website provides an easy way to search for and research modules.
+
+  #### Scaling out
+  This single server deployment is not well suited to be scaled out.  We
+  recommend leveraging a multi server option. If content needs to be moved,
+  instructions above regarding migrating an existing site may help with that
+  transition.
