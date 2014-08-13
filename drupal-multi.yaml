@@ -481,6 +481,14 @@ outputs:
     value: { get_attr: [load_balancer, PublicIp] }
     description: Load Balancer IP
 
+  drupal_url:
+    description: Drupal URL
+    value:
+      str_replace:
+        template: "http://%ip%"
+        params:
+          "%ip%": { get_attr: [load_balancer, PublicIp] }
+
   drupal_user:
     value: { get_param: username }
     description: Drupal User

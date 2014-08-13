@@ -69,6 +69,7 @@ Use `heat output-show <OUTPUT NAME>` to get the value of a specific output.
 
 * `private_key`: SSH Private IP
 * `load_balancer_ip`: Load Balancer IP
+* `drupal_url`: Drupal URL
 * `mysql_root_password`: MySQL Root Password
 * `drupal_password`: Drupal Password
 * `web_ips`: Web Server IPs
