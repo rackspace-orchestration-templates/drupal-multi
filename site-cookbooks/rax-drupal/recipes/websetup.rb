@@ -37,7 +37,7 @@ else
   include_recipe "mysql::client"
 end
 
-if node['rax']['lsyncd']['ssh']['pub'] do
+if node['rax']['lsyncd']['ssh']['pub']
   include_recipe 'rax-drupal::user'
 
   directory File.join(node['drupal']['dir'], '.ssh') do
