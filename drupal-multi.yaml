@@ -402,12 +402,13 @@ resources:
           server_debian_password: { get_attr: [mysql_debian_password, value] }
           remove_test_database: true
           remove_anonymous_users: true
+          root_network_acl: ['10.%']
         rax:
           mysql:
             innodb_buffer_pool_mempercent: 0.6
         run_list: ["recipe[apt]",
                    "recipe[mysql::server]",
-                   "recipe[rax-drupal::dbsetup]",
+                   "recipe[dotmy-cnf]",
                    "recipe[hollandbackup]",
                    "recipe[hollandbackup::mysqldump]",
                    "recipe[hollandbackup::main]",
