@@ -413,7 +413,8 @@ resources:
                    "recipe[hollandbackup::mysqldump]",
                    "recipe[hollandbackup::main]",
                    "recipe[hollandbackup::backupsets]",
-                   "recipe[hollandbackup::cron]"]
+                   "recipe[hollandbackup::cron]",
+                   "recipe[rax-drupal::firewall-mysql]"]
 
   master_server_setup:
     type: "OS::Heat::ChefSolo"
@@ -451,6 +452,9 @@ resources:
           site:
             admin: { get_param: username }
             pass: { get_attr: [database_password, value] }
+            host: 'local'
+        mysql:
+          server_root_password: { get_attr: [mysql_root_password, value] }
         rax:
           apache:
             domain: { get_param: domain }
