@@ -31,11 +31,7 @@ when 'rhel', 'fedora'
   end
 end
 
-if node['drupal']['site']['host'] == "localhost"
-  include_recipe "mysql::server"
-else
-  include_recipe "mysql::client"
-end
+include_recipe "mysql::client"
 
 if node['rax']['lsyncd']['ssh']['pub']
   include_recipe 'rax-drupal::user'
