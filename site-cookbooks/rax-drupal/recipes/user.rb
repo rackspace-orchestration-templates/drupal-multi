@@ -22,7 +22,7 @@ group node['rax']['drupal']['group'] do
   action :create
 end
 
-user node['rax']['drupal']['user']['name'] do
+user node['rax']['drupal']['user'] do
   action :create
   comment 'Drupal user'
   home node['drupal']['dir']
