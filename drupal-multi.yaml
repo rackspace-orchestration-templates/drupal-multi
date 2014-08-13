@@ -35,7 +35,6 @@ parameter_groups:
   - chef_version
   - child_template
   - version
-  - prefix
   - load_balancer_hostname
   - web_server_hostnames
   - master_server_hostname
