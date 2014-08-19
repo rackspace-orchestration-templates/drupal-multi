@@ -371,6 +371,7 @@ resources:
           kitchen: { get_param: kitchen }
           chef_version: { get_param: chef_version }
           parent_stack_id: { get_param: "OS::stack_id" }
+          varnish_master_backend: { get_attr: [master_server, privateIPv4] }
 
   # Chef resources
   database_server_setup:
@@ -429,9 +430,12 @@ resources:
       chef_version: { get_param: chef_version }
       node:
         apache:
+          listen_ports: [8080]
           timeout: 30
           serversignature: "Off"
           traceenable: "Off"
+        varnish:
+          listen_port: "80"  
         lsyncd:
           interval: 5
         sysctl:
@@ -458,6 +462,8 @@ resources:
         rax:
           apache:
             domain: { get_param: domain }
+          varnish:
+            master_backend: "localhost"
           firewall:
             tcp: [80]
           lsyncd:
@@ -469,6 +475,10 @@ resources:
                    "recipe[drupal]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
+                   "recipe[varnish::apt_repo]",
+                   "recipe[varnish]",
+                   "recipe[rax-drupal::varnish]",
+                   "recipe[rax-drupal::varnish-firewall]",
                    "recipe[sysctl::attribute_driver]",
                    "recipe[rax-firewall]"]
 
