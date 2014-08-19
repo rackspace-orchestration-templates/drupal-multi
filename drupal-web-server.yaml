@@ -74,6 +74,12 @@ parameters:
     type: string
     description: Public key for lsync config
 
+  # Varnish Master backend
+  varnish_master_backend:
+    description: Master backend host for admin calls in Varnish
+    type: string
+    default: "localhost"
+
   # SSH config
   ssh_keypair_name:
     type: string
@@ -124,21 +130,29 @@ resources:
       chef_version: { get_param: chef_version }
       node:
         apache:
+          listen_ports: [8080]
           timeout: 30
           serversignature: "Off"
           traceenable: "Off"
         drupal:
           dir: { get_param: drupal_dir }
+        varnish:
+          listen_port: "80"
         rax:
           firewall:
             tcp: [80]
           lsyncd:
             ssh:
               pub: { get_param: lsync_pub }
+          varnish:
+            master_backend: { get_param: varnish_master_backend }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
+                   "recipe[varnish::apt_repo]",
+                   "recipe[varnish]",
                    "recipe[rax-drupal::websetup]",
                    "recipe[rax-drupal::user]",
+                   "recipe[rax-drupal::varnish]",
                    "recipe[rax-firewall]"]
 
 outputs:
