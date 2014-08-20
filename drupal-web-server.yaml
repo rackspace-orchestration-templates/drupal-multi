@@ -147,7 +147,8 @@ resources:
             ssh:
               pub: { get_param: lsync_pub }
           varnish:
-            backend_host: { get_param: varnish_master_backend }
+            master_backend: { get_param: varnish_master_backend }
+            purge_acl: [{ get_param: varnish_master_backend }]
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
                    "recipe[varnish::repo]",
