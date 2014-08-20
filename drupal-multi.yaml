@@ -475,7 +475,7 @@ resources:
                    "recipe[drupal]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
-                   "recipe[varnish::apt_repo]",
+                   "recipe[varnish:repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",
                    "recipe[rax-drupal::varnish-firewall]",

@@ -148,7 +148,7 @@ resources:
             master_backend: { get_param: varnish_master_backend }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
-                   "recipe[varnish::apt_repo]",
+                   "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::websetup]",
                    "recipe[rax-drupal::user]",
