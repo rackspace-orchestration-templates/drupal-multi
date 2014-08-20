@@ -463,7 +463,7 @@ resources:
           apache:
             domain: { get_param: domain }
           varnish:
-            master_backend: "localhost"
+            backend_host: "localhost"
           firewall:
             tcp: [80]
           lsyncd:
