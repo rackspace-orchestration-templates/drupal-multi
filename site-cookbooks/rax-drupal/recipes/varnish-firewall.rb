@@ -1,6 +1,6 @@
 # coding: utf-8
 #
-# Cookbook Name:: rax-wordpress
+# Cookbook Name:: rax-drupal
 # Recipe:: varnish-firewall
 #
 # Copyright 2014
