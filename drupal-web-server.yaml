@@ -138,6 +138,7 @@ resources:
           dir: { get_param: drupal_dir }
         varnish:
           listen_port: "80"
+          version: "3.0"
         rax:
           apache:
             domain: { get_param: domain }
