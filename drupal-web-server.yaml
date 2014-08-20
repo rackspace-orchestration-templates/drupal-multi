@@ -100,7 +100,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.14.2
+    default: 11.14.6
 
   parent_stack_id:
     type: string
@@ -147,7 +147,8 @@ resources:
             ssh:
               pub: { get_param: lsync_pub }
           varnish:
-            backend_host: { get_param: varnish_master_backend }
+            master_backend: { get_param: varnish_master_backend }
+            purge_acl: [{ get_param: varnish_master_backend }]
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
                    "recipe[varnish::repo]",

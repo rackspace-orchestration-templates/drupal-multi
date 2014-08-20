@@ -249,7 +249,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.14.2
+    default: 11.14.6
 
   child_template:
     label: Child Template
@@ -435,7 +435,7 @@ resources:
           serversignature: "Off"
           traceenable: "Off"
         varnish:
-          listen_port: "80"  
+          listen_port: "80"
         lsyncd:
           interval: 5
         sysctl:
@@ -475,7 +475,7 @@ resources:
                    "recipe[drupal]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
-                   "recipe[varnish:repo]",
+                   "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",
                    "recipe[rax-drupal::varnish-firewall]",
