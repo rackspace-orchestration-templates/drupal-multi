@@ -136,6 +136,8 @@ resources:
           traceenable: "Off"
         drupal:
           dir: { get_param: drupal_dir }
+          apache:
+            port: "8080"
         varnish:
           listen_port: "80"
           version: "3.0"
