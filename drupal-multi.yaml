@@ -436,12 +436,15 @@ resources:
           traceenable: "Off"
         varnish:
           listen_port: "80"
+          version: "3.0"
         lsyncd:
           interval: 5
         sysctl:
           values:
             fs.inotify.max_user_watches: 1000000
         drupal:
+          apache:
+            port: "8080"
           version: { get_param: version }
           dir:
             str_replace:
