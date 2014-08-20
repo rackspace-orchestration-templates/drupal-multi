@@ -9,7 +9,7 @@ backend master_<%= domain_hash %>_admin {
     .host = "<%= @master %>";
     .port = "<%= node['varnish']['backend_port'] %>";
 }
-backend local_<%= domain_hash %> {
+backend default {
     .host = "127.0.0.1";
     .port = "<%= node['varnish']['backend_port'] %>";
 }
