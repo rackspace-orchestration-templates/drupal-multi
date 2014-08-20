@@ -139,6 +139,8 @@ resources:
         varnish:
           listen_port: "80"
         rax:
+          apache:
+            domain: { get_param: domain }
           firewall:
             tcp: [80]
           lsyncd:
