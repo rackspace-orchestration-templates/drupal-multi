@@ -13,6 +13,10 @@ backend default {
     .host = "127.0.0.1";
     .port = "<%= node['varnish']['backend_port'] %>";
 }
+acl internal {
+  "localhost";
+  "127.0.0.1";
+}
 acl purge {
   "localhost";
 <%- @purge_hosts.each do |purge_host| %>
@@ -79,7 +83,7 @@ sub vcl_recv {
     return (pass);
   }
   # Disallow outside access to cron.php or install.php
-  if (req.url ~ "^/(cron|install)\.php$" && !client.ip == "127.0.0.1") {
+  if (req.url ~ "^/(cron|install)\.php$" && !client.ip ~ internal) {
     # Either let Varnish throw the error directly,
     error 404 "Page not found.";
     # Or, use a custom error page that you've defined in Drupal at the path "404".
