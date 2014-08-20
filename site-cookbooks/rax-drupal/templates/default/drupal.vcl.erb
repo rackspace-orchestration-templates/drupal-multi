@@ -38,7 +38,7 @@ sub vcl_recv {
   {
       set req.backend = master_<%= domain_hash %>_admin;
   }
-  if ((req.url ~ "admin") {
+  if (req.url ~ "admin") {
       set req.backend = master_<%= domain_hash %>_admin;
   }
   # Check the incoming request type is "PURGE", not "GET" or "POST"
@@ -79,7 +79,7 @@ sub vcl_recv {
     return (pass);
   }
   # Disallow outside access to cron.php or install.php
-  if (req.url ~ "^/(cron|install)\.php$" && !client.ip ~ internal) {
+  if (req.url ~ "^/(cron|install)\.php$" && !client.ip == "127.0.0.1") {
     # Either let Varnish throw the error directly,
     error 404 "Page not found.";
     # Or, use a custom error page that you've defined in Drupal at the path "404".
