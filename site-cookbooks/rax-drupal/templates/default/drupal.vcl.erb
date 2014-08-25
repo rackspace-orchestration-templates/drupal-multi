@@ -88,10 +88,6 @@ sub vcl_recv {
     # Or, use a custom error page that you've defined in Drupal at the path "404".
     # set req.url = "/404";
   }
-  # Always cache the following file types for all users.
-  if (req.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$") {
-    unset req.http.Cookie;
-  }
   # Remove all cookies that Drupal doesn't need to know about. ANY remaining
   # cookie will cause the request to pass-through to Apache. For the most part
   # we always set the NO_CACHE cookie after any POST request, disabling the
@@ -125,6 +121,10 @@ sub vcl_recv {
       set req.backend = master_<%= domain_hash %>_admin;
       return (pass);
     }
+  }
+  # Always cache the following file types for all users.
+  if (req.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$") {
+    unset req.http.Cookie;
   }
   # Remove the "has_js" cookie
   set req.http.Cookie = regsuball(req.http.Cookie, "has_js=[^;]+(; )?", "");
