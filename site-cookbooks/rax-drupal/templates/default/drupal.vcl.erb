@@ -42,9 +42,6 @@ sub vcl_recv {
   {
       set req.backend = master_<%= domain_hash %>_admin;
   }
-  if (req.url ~ "admin") {
-      set req.backend = master_<%= domain_hash %>_admin;
-  }
   # Check the incoming request type is "PURGE", not "GET" or "POST"
   if (req.request == "PURGE") {
     # Check if the ip coresponds with the acl purge
@@ -60,6 +57,7 @@ sub vcl_recv {
   }
   # Pipe these paths directly to Apache for streaming.
   if (req.url ~ "^/admin/content/backup_migrate/export") {
+    set req.backend = master_<%= domain_hash %>_admin;
     return (pipe);
   }
   #  If global redirect is on
@@ -80,6 +78,7 @@ sub vcl_recv {
     req.url ~ "^/flag/.*$" ||
     req.url ~ "^.*/ajax/.*$" ||
     req.url ~ "^.*/ahah/.*$") {
+    set req.backend = master_<%= domain_hash %>_admin;
     return (pass);
   }
   # Disallow outside access to cron.php or install.php
@@ -123,6 +122,7 @@ sub vcl_recv {
     # If there are any cookies left (a session or NO_CACHE cookie), do not
     # cache the page; pass it on to Apache directly.
     else {
+      set req.backend = master_<%= domain_hash %>_admin;
       return (pass);
     }
   }
