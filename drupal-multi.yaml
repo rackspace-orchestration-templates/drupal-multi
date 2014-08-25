@@ -210,7 +210,6 @@ parameters:
     constraints:
     - allowed_values:
       - "7.31"
-      - "6.33"
 
   # Database and system user configuration
   database_name:
