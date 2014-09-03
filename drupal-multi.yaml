@@ -116,6 +116,10 @@ parameters:
     constraints:
     - allowed_values:
       - Ubuntu 12.04 LTS (Precise Pangolin)
+      - Debian 7 (Wheezy) (PVHVM)
+      - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+      - CentOS 6.5 (PVHVM)
+      - Red Hat Enterprise Linux 6.5 (PVHVM)
       description: Must be a supported operating system.
 
   database_server_flavor:

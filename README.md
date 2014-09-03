@@ -84,9 +84,7 @@ Stack Details
 =============
 #### Getting Started
 If you're new to Drupal, check out [Getting started with Drupal 7
-administration](https://drupal.org/getting-started/7/admin) or [Getting
-started with Drupal 6
-administration](https://drupal.org/getting-started/6/admin). The getting
+administration](https://drupal.org/getting-started/7/admin). The getting
 started document will help guide you through the initial steps of checking
 your site's status, customizing your site's informaion, adding users, and
 more!
