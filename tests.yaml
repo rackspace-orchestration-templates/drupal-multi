@@ -54,7 +54,10 @@ test-cases:
 - name: Standard Instance, Ubuntu 12.04
   create:
     parameters:
-      flavor: 2GB Standard Instance
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
       image: Ubuntu 12.04 LTS (Precise Pangolin)
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
@@ -107,7 +110,10 @@ test-cases:
 - name: Standard Instance, Ubuntu 14.04
   create:
     parameters:
-      flavor: 2GB Standard Instance
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
       image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
@@ -160,7 +166,10 @@ test-cases:
 - name: Standard Instance, Debian 7
   create:
     parameters:
-      flavor: 2GB Standard Instance
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
       image: Debian 7 (Wheezy) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
@@ -214,7 +223,10 @@ test-cases:
 - name: Standard Instance, CentOS 6
   create:
     parameters:
-      flavor: 2GB Standard Instance
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
       image: CentOS 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
@@ -267,7 +279,10 @@ test-cases:
 - name: Standard Instance, Red Hat 6
   create:
     parameters:
-      flavor: 2GB Standard Instance
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
       image: Red Hat Enterprise Linux 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
