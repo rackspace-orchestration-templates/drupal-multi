@@ -29,6 +29,17 @@ when "rhel", "fedora"
   execute "Saving mysql iptables rule set" do
     command "/sbin/service iptables save"
   end
+when "debian"
+  package "ufw" do
+      action :install
+  end
+  include_recipe "firewall"
+
+  firewall_rule "mysql" do
+    port node['mysql']['port'].to_i
+    protocol :tcp
+    interface node['rax']['mysql']['interface']
+  end
 else
   include_recipe "firewall"
 
