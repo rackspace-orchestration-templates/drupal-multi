@@ -26,6 +26,9 @@ listen_ports.each do |listen_port|
   node['rax']['lsyncd']['clients'].each do |client|
     case node['platform_family']
     when 'debian'
+      package "ufw" do
+        action :install
+      end
       firewall_rule "Firewall rule, tcp/#{listen_port}" do
         port      listen_port.to_i
         source    client
