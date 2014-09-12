@@ -18,7 +18,7 @@
 case node["platform_family"]
 when "rhel", "fedora"
   fwfile = "/etc/sysconfig/iptables"
-  %w{ node['mysql']['port'] }.each do |port|
+  %w( node['mysql']['port'] ).each do |port|
     rule = "-I INPUT -p tcp -m tcp --dport #{port} -j ACCEPT"
     execute "Adding iptables rule for #{port}" do
       command "iptables #{rule}"
