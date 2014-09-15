@@ -485,13 +485,13 @@ resources:
             clients: { get_attr: [web_servers, privateIPv4] }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
+                   "recipe[rax-drupal::mastersetup]",
                    "recipe[drupal]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
                    "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",
-                   "recipe[rax-drupal::mastersetup]",
                    "recipe[rax-drupal::varnish-firewall]",
                    "recipe[sysctl::attribute_driver]",
                    "recipe[rax-firewall]"]
