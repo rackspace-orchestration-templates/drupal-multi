@@ -491,6 +491,7 @@ resources:
                    "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",
+                   "recipe[rax-drupal::mastersetup]",
                    "recipe[rax-drupal::varnish-firewall]",
                    "recipe[sysctl::attribute_driver]",
                    "recipe[rax-firewall]"]
