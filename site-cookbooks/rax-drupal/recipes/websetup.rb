@@ -29,6 +29,14 @@ when 'rhel', 'fedora'
   package 'php-dom' do
     action :install
   end
+  template "#{node['apache']['dir']}/conf.d/ports.conf" do
+    source 'ports.conf.erb'
+    owner 'root'
+    group node['apache']['root_group']
+    mode '0644'
+    notifies :restart, 'service[apache2]', :delayed
+end
+
 end
 
 include_recipe "mysql::client"
