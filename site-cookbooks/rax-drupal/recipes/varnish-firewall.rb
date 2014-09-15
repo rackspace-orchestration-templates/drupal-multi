@@ -41,7 +41,7 @@ listen_ports.each do |listen_port|
         name       'Drupal'
         chain      'INPUT'
         table      'filter'
-        ip_version [4, 6]
+        ip_version [4]
         rule       "-s #{client} -p tcp --dport #{listen_port} -j ACCEPT"
         action     :create_if_missing
       end
