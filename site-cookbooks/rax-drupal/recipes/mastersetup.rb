@@ -36,14 +36,6 @@ when 'rhel', 'fedora'
     mode '0644'
     notifies :restart, 'service[apache2]', :delayed
   end
-
-  directory "/etc/mysql" do
-    recursive true
-    mode "0755"
-    action :create
-  end
-  # CentOS/RHEL don't have this by default, but read from it if it's there
-  # go ahead and drop it so the drupal recipe doesn't fail
 end
 
 include_recipe "mysql::client"

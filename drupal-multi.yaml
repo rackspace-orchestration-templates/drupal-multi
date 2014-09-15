@@ -485,8 +485,9 @@ resources:
             clients: { get_attr: [web_servers, privateIPv4] }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
-                   "recipe[rax-drupal::mastersetup]",
+                   "recipe[rax-drupal::masterpredrupal]",
                    "recipe[drupal]",
+                   "recipe[rax-drupal::mastersetup]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
                    "recipe[varnish::repo]",
