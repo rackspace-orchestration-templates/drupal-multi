@@ -69,6 +69,15 @@ parameters:
     type: string
     description: "Directory Drupal will be installed in"
 
+  version:
+    label: Drupal Version
+    description: Version of Drupal to install
+    type: string
+    default: "7.32"
+    constraints:
+    - allowed_values:
+      - "7.32"
+
   # Lsync config
   lsync_pub:
     type: string
@@ -100,7 +109,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.14.6
+    default: 11.16.4
 
   parent_stack_id:
     type: string
@@ -135,6 +144,7 @@ resources:
           serversignature: "Off"
           traceenable: "Off"
         drupal:
+          version: { get_param: version }
           dir: { get_param: drupal_dir }
           apache:
             port: "8080"

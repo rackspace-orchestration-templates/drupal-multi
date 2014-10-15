@@ -206,10 +206,10 @@ parameters:
     label: Drupal Version
     description: Version of Drupal to install
     type: string
-    default: "7.31"
+    default: "7.32"
     constraints:
     - allowed_values:
-      - "7.31"
+      - "7.32"
 
   # Database and system user configuration
   database_name:
@@ -248,7 +248,7 @@ parameters:
     label: Chef Version
     description: Version of chef client to use
     type: string
-    default: 11.14.6
+    default: 11.16.4
 
   child_template:
     label: Child Template
@@ -375,6 +375,7 @@ resources:
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key: { get_attr: [ssh_key, private_key] }
           kitchen: { get_param: kitchen }
+          version: { get_param: version }
           chef_version: { get_param: chef_version }
           parent_stack_id: { get_param: "OS::stack_id" }
           varnish_master_backend: { get_attr: [master_server, privateIPv4] }
