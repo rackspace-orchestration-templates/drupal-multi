@@ -375,6 +375,7 @@ resources:
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key: { get_attr: [ssh_key, private_key] }
           kitchen: { get_param: kitchen }
+          version: { get_param: version }
           chef_version: { get_param: chef_version }
           parent_stack_id: { get_param: "OS::stack_id" }
           varnish_master_backend: { get_attr: [master_server, privateIPv4] }
