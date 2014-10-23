@@ -111,9 +111,6 @@ test-cases:
 - name: Perfomrance, Ubuntu 14.04
   create:
     parameters:
-      database_server_flavor: 2 GB Perfomrance
-      master_server_flavor: 2 GB Perfomrance
-      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -168,9 +165,6 @@ test-cases:
 - name: Perfomrance, Debian 7
   create:
     parameters:
-      database_server_flavor: 2 GB Perfomrance
-      master_server_flavor: 2 GB Perfomrance
-      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Debian 7 (Wheezy) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -226,9 +220,6 @@ test-cases:
 - name: Perfomrance, CentOS 6
   create:
     parameters:
-      database_server_flavor: 2 GB Perfomrance
-      master_server_flavor: 2 GB Perfomrance
-      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: CentOS 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -283,9 +274,6 @@ test-cases:
 - name: Perfomrance, Red Hat 6
   create:
     parameters:
-      database_server_flavor: 2 GB Perfomrance
-      master_server_flavor: 2 GB Perfomrance
-      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Red Hat Enterprise Linux 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
