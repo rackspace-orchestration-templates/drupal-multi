@@ -58,7 +58,7 @@ the `-P` flag to specify a custom parameter.
   (Default: Drupal-Web%index%)
 * `database_server_hostname`: Hostname to use for your Drupal Database Server
   (Default: Drupal-Database)
-* `version`: Version of Drupal to install (Default: 7.31)
+* `version`: Version of Drupal to install (Default: 7.32)
 * `chef_version`: Version of chef client to use (Default: 11.14.6)
 
 Outputs

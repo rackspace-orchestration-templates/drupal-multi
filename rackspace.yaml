@@ -1,7 +1,7 @@
 schema-version: 1.0.0
 application-family: CMS
 application-name: Drupal
-application-version: 7.31
+application-version: 7.32
 flavor: Multiple Linux servers
 flavor-weight: 1
 reach-info:

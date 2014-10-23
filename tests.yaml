@@ -2,6 +2,7 @@ test-cases:
 - name: Default Build Test # Deploy using all default options
   create:
     parameters:
+<<<<<<< HEAD
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
@@ -291,6 +292,11 @@ test-cases:
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
+=======
+      kitchen: https://github.com/rackspace-orchestration-templates/drupal-multi
+      child_template: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
+    timeout: 30 # Deployment should complete in under 30 minutes
+>>>>>>> dfe64bdb5da11eacf330b23d2241fe50b774bf4c
   resource_tests: # Tests to run on the resources themselves
     ssh_private_key: { get_output: private_key } # Fetch from output-list of stack
     ssh_key_file: tmp/private_key # File to write with ssh_private_key
