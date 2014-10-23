@@ -51,7 +51,7 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Standard Instance, Ubuntu 12.04
+- name: Standard, Ubuntu 12.04
   create:
     parameters:
       database_server_flavor: 2GB Standard Instance
@@ -108,12 +108,12 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Standard Instance, Ubuntu 14.04
+- name: Perfomrance, Ubuntu 14.04
   create:
     parameters:
-      database_server_flavor: 2GB Standard Instance
-      master_server_flavor: 2GB Standard Instance
-      web_server_flavor: 2GB Standard Instance
+      database_server_flavor: 2 GB Perfomrance
+      master_server_flavor: 2 GB Perfomrance
+      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -165,12 +165,12 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Standard Instance, Debian 7
+- name: Perfomrance, Debian 7
   create:
     parameters:
-      database_server_flavor: 2GB Standard Instance
-      master_server_flavor: 2GB Standard Instance
-      web_server_flavor: 2GB Standard Instance
+      database_server_flavor: 2 GB Perfomrance
+      master_server_flavor: 2 GB Perfomrance
+      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Debian 7 (Wheezy) (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -223,12 +223,12 @@ test-cases:
             fabfile: test/fabric/database.py # Path to envassert test
 
 
-- name: Standard Instance, CentOS 6
+- name: Perfomrance, CentOS 6
   create:
     parameters:
-      database_server_flavor: 2GB Standard Instance
-      master_server_flavor: 2GB Standard Instance
-      web_server_flavor: 2GB Standard Instance
+      database_server_flavor: 2 GB Perfomrance
+      master_server_flavor: 2 GB Perfomrance
+      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: CentOS 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
@@ -280,12 +280,12 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Standard Instance, Red Hat 6
+- name: Perfomrance, Red Hat 6
   create:
     parameters:
-      database_server_flavor: 2GB Standard Instance
-      master_server_flavor: 2GB Standard Instance
-      web_server_flavor: 2GB Standard Instance
+      database_server_flavor: 2 GB Perfomrance
+      master_server_flavor: 2 GB Perfomrance
+      web_server_flavor: 2 GB Perfomrance
       web_server_count: 1
       image: Red Hat Enterprise Linux 6.5 (PVHVM)
       kitchen: https://github.com/rillip3/drupal-multi
