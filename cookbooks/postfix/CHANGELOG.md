@@ -2,6 +2,21 @@ postfix Cookbook CHANGELOG
 ==========================
 This file is used to list changes made in each version of the postfix cookbook.
 
+v3.6.0 (2014-08-25)
+-------------------
+- restart postfix after updating virtual alias templates #86
+- fixing typo for alias_db location in omnios
+- moving conditional attributes to a recipe so they can be modified
+  via other cookbook attributes
+
+v3.5.0 (2014-08-25)
+-------------------
+Adding virtual_domains functionality
+
+v3.4.1 (2014-08-20)
+-------------------
+Removing unused parameters from main.cf
+
 v3.4.0 (2014-07-25)
 -------------------
 Refactoring to fix some logic issues

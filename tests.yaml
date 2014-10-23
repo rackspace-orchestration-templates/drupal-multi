@@ -2,7 +2,6 @@ test-cases:
 - name: Default Build Test # Deploy using all default options
   create:
     parameters:
-<<<<<<< HEAD
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
@@ -109,62 +108,62 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-#- name: Standard Instance, Ubuntu 14.04
-#  create:
-#    parameters:
-#      database_server_flavor: 2GB Standard Instance
-#      master_server_flavor: 2GB Standard Instance
-#      web_server_flavor: 2GB Standard Instance
-#      web_server_count: 1
-#      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-#      kitchen: https://github.com/rillip3/drupal-multi
-#      child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
-#    timeout: 60 # Deployment should complete in under 30 minutes
-#  resource_tests: # Tests to run on the resources themselves
-#    ssh_private_key: { get_output: private_key } # Fetch from output-list of stack
-#    ssh_key_file: tmp/private_key # File to write with ssh_private_key
-#    tests:
-#    - drupal_master_server:
-#        fabric:
-#          # Fabric environment settings to use while running envassert script
-#          # http://docs.fabfile.org/en/latest/usage/env.html
-#          env:
-#            user: root
-#            key_filename: tmp/private_key
-#            hosts: { get_output: web_master_ip } # Fetch from output-list of stack
-#            tasks:
-#              - check
-#            abort_on_prompts: True
-#            connection_attempts: 3
-#            disable_known_hosts: True
-#            use_ssh_config: True
-#            fabfile: test/fabric/drupal_web.py
-#    - drupal_web_servers:
-#        fabric:
-#          env:
-#            user: root
-#            key_filename: tmp/private_key
-#            hosts: { get_output: web_ips }
-#            tasks:
-#              - check
-#            abort_on_prompts: True
-#            connection_attempts: 3
-#            disable_known_hosts: True
-#            use_ssh_config: True
-#            fabfile: test/fabric/drupal_web.py
-#    - database_server:
-#        fabric:
-#          env:
-#            user: root
-#            key_filename: tmp/private_key
-#            hosts: { get_output: database_server_ip }
-#            tasks:
-#              - mysql
-#            abort_on_prompts: True
-#            connection_attempts: 3
-#            disable_known_hosts: True
-#            use_ssh_config: True
-#            fabfile: test/fabric/database.py # Path to envassert test
+- name: Standard Instance, Ubuntu 14.04
+  create:
+    parameters:
+      database_server_flavor: 2GB Standard Instance
+      master_server_flavor: 2GB Standard Instance
+      web_server_flavor: 2GB Standard Instance
+      web_server_count: 1
+      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+      kitchen: https://github.com/rillip3/drupal-multi
+      child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
+    timeout: 60 # Deployment should complete in under 30 minutes
+  resource_tests: # Tests to run on the resources themselves
+    ssh_private_key: { get_output: private_key } # Fetch from output-list of stack
+    ssh_key_file: tmp/private_key # File to write with ssh_private_key
+    tests:
+    - drupal_master_server:
+        fabric:
+          # Fabric environment settings to use while running envassert script
+          # http://docs.fabfile.org/en/latest/usage/env.html
+          env:
+            user: root
+            key_filename: tmp/private_key
+            hosts: { get_output: web_master_ip } # Fetch from output-list of stack
+            tasks:
+              - check
+            abort_on_prompts: True
+            connection_attempts: 3
+            disable_known_hosts: True
+            use_ssh_config: True
+            fabfile: test/fabric/drupal_web.py
+    - drupal_web_servers:
+        fabric:
+          env:
+            user: root
+            key_filename: tmp/private_key
+            hosts: { get_output: web_ips }
+            tasks:
+              - check
+            abort_on_prompts: True
+            connection_attempts: 3
+            disable_known_hosts: True
+            use_ssh_config: True
+            fabfile: test/fabric/drupal_web.py
+    - database_server:
+        fabric:
+          env:
+            user: root
+            key_filename: tmp/private_key
+            hosts: { get_output: database_server_ip }
+            tasks:
+              - mysql
+            abort_on_prompts: True
+            connection_attempts: 3
+            disable_known_hosts: True
+            use_ssh_config: True
+            fabfile: test/fabric/database.py # Path to envassert test
 
 - name: Standard Instance, Debian 7
   create:
@@ -292,11 +291,6 @@ test-cases:
       kitchen: https://github.com/rillip3/drupal-multi
       child_template: https://raw.githubusercontent.com/rillip3/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
-=======
-      kitchen: https://github.com/rackspace-orchestration-templates/drupal-multi
-      child_template: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
-    timeout: 30 # Deployment should complete in under 30 minutes
->>>>>>> dfe64bdb5da11eacf330b23d2241fe50b774bf4c
   resource_tests: # Tests to run on the resources themselves
     ssh_private_key: { get_output: private_key } # Fetch from output-list of stack
     ssh_key_file: tmp/private_key # File to write with ssh_private_key
