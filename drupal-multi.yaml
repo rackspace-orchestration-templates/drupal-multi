@@ -440,6 +440,7 @@ resources:
       kitchen: { get_param: kitchen }
       chef_version: { get_param: chef_version }
       node:
+        server_name: { get_param: domain }
         apache:
           listen_ports: [8080]
           timeout: 30
