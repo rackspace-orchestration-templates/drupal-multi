@@ -108,7 +108,7 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Perfomrance, Ubuntu 14.04
+- name: Performance, Ubuntu 14.04
   create:
     parameters:
       web_server_count: 1

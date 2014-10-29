@@ -8,6 +8,11 @@ module Opscode
         nil
       end
 
+      def sensitive_supported?
+        chef_version = Chef::VersionConstraint.new('>= 11.14.0')
+        chef_version.include?(Chef::VERSION)
+      end
+
       def keyname_for(platform, platform_family, platform_version)
         case
         when platform_family == 'rhel'
@@ -96,6 +101,17 @@ module Opscode
               '5.6' => {
                 'package_name' => 'mysql-community-server'
               }
+            },
+            '2014.09' => {
+              '5.1' => {
+                'package_name' => 'mysql51-server'
+              },
+              '5.5' => {
+                'package_name' => 'mysql-community-server'
+              },
+              '5.6' => {
+                'package_name' => 'mysql-community-server'
+              }
             }
           },
           'fedora' => {
@@ -154,6 +170,14 @@ module Opscode
               }
             },
             '14.04' => {
+              '5.5' => {
+                'package_name' => 'mysql-server-5.5'
+              },
+              '5.6' => {
+                'package_name' => 'mysql-server-5.6'
+              }
+            },
+            '14.10' => {
               '5.5' => {
                 'package_name' => 'mysql-server-5.5'
               },
