@@ -440,7 +440,6 @@ resources:
       kitchen: { get_param: kitchen }
       chef_version: { get_param: chef_version }
       node:
-        fqdn: { get_param: domain }
         apache:
           listen_ports: [8080]
           timeout: 30
@@ -455,6 +454,7 @@ resources:
           values:
             fs.inotify.max_user_watches: 1000000
         drupal:
+          server_name: { get_param: domain }
           apache:
             port: "8080"
           version: { get_param: version }
@@ -492,6 +492,7 @@ resources:
                    "recipe[rax-drupal::mastersetup]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
+                   "recipe[rax-drupal::apachepostsetup]",
                    "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",
