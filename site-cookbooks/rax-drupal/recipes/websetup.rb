@@ -61,14 +61,6 @@ if node['rax']['lsyncd']['ssh']['pub']
   end
 end
 
-web_app "drupal" do
-  template "drupal.conf.erb"
-  cookbook "drupal"
-  docroot node['drupal']['dir']
-  server_name server_fqdn
-  server_aliases node['fqdn']
-end
-
 execute "disable-default-site" do
    command "sudo a2dissite default"
    notifies :reload, "service[apache2]", :delayed

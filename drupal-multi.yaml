@@ -455,6 +455,7 @@ resources:
             fs.inotify.max_user_watches: 1000000
         drupal:
           server_name: { get_param: domain }
+          server_alias: { get_param: domain }
           apache:
             port: "8080"
           version: { get_param: version }

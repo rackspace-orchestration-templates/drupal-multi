@@ -149,6 +149,7 @@ resources:
           traceenable: "Off"
         drupal:
           server_name: { get_param: domain }
+          server_alias: { get_param: domain }
           version: { get_param: version }
           dir: { get_param: drupal_dir }
           apache:
