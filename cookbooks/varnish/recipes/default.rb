@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'varnish::repo'
+include_recipe 'varnish::repo' if node['varnish']['use_default_repo']
 
 package 'varnish'
 

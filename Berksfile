@@ -13,6 +13,6 @@ cookbook 'hollandbackup',
 cookbook 'rax-firewall',
   :git => 'https://github.com/brint/rax-firewall-cookbook'
 cookbook 'lsyncd',
-  :git => 'https://github.com/dgivens/chef-lsyncd'
+  :git => 'https://github.com/rillip3/chef-lsyncd.git'
 cookbook 'varnish',
   :git => 'https://github.com/opscode-cookbooks/varnish'
