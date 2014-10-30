@@ -24,10 +24,14 @@ parameters:
       Required: Server image used for all servers that are created as a part of
       this deployment.
     type: string
-    default: Ubuntu 12.04 LTS (Precise Pangolin)
+    default: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM) 
     constraints:
     - allowed_values:
+      - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       - Ubuntu 12.04 LTS (Precise Pangolin)
+      - Debian 7 (Wheezy) (PVHVM)
+      - CentOS 6.5 (PVHVM)
+      - Red Hat Enterprise Linux 6.5 (PVHVM)
       description: Must be a supported operating system.
 
   flavor:
@@ -144,6 +148,8 @@ resources:
           serversignature: "Off"
           traceenable: "Off"
         drupal:
+          server_name: { get_param: domain }
+          server_alias: { get_param: domain }
           version: { get_param: version }
           dir: { get_param: drupal_dir }
           apache:
@@ -164,11 +170,12 @@ resources:
             purge_acl: [{ get_param: varnish_master_backend }]
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
+                   "recipe[rax-drupal::websetup]",
                    "recipe[varnish::repo]",
                    "recipe[varnish]",
-                   "recipe[rax-drupal::websetup]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::varnish]",
+                   "recipe[rax-drupal::apachepostsetup]",
                    "recipe[rax-firewall]"]
 
 outputs:

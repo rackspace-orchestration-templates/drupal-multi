@@ -27,10 +27,14 @@ default['apt']['compile_time_update'] = false
 default['apt']['key_proxy'] = ''
 default['apt']['cache_bypass'] = {}
 default['apt']['periodic_update_min_delay'] = 86_400
+default['apt']['launchpad_api_version'] = '1.0'
 default['apt']['unattended_upgrades']['enable'] = false
 default['apt']['unattended_upgrades']['update_package_lists'] = true
 # this needs a good default
-default['apt']['unattended_upgrades']['allowed_origins'] = []
+codename = node.attribute?('lsb') ? node['lsb']['codename'] : 'notlinux'
+default['apt']['unattended_upgrades']['allowed_origins'] = [
+  "#{node['platform'].capitalize} #{codename}"
+]
 default['apt']['unattended_upgrades']['package_blacklist'] = []
 default['apt']['unattended_upgrades']['auto_fix_interrupted_dpkg'] = false
 default['apt']['unattended_upgrades']['minimal_steps'] = false

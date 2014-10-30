@@ -1,6 +1,9 @@
-# Cookbook Name:: varnish
-# Recipe:: vmod-parsereq
-# Author:: Kelley Reynolds <kelley.reynolds@rubyscale.com>
+# coding: utf-8
+#
+# Cookbook Name:: rax-drupal
+# Recipe:: mastersetup
+#
+# Copyright 2014
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +18,13 @@
 # limitations under the License.
 #
 
-git_vmod "POST/GET/Cookie Parse" do
-  source "https://github.com/xcir/libvmod-parsereq.git"
+case node['platform_family']
+when 'rhel', 'fedora'
+  directory "/etc/mysql" do
+    recursive true
+    mode "0755"
+    action :create
+  end
+  # CentOS/RHEL don't have this by default, but read from it if it's there
+  # go ahead and drop it so the drupal recipe doesn't fail
 end
