@@ -1,6 +1,6 @@
 {
   "name": "postfix",
-  "version": "3.4.0",
+  "version": "3.6.1",
   "description": "Installs and configures postfix for client or outbound relayhost, or to do SASL auth",
   "long_description": "",
   "maintainer": "Chef Software, Inc.",

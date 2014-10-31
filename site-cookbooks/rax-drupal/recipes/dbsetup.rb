@@ -17,6 +17,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+case node['platform_family']
+when 'rhel', 'fedora'
+  directory "/etc/mysql" do
+    recursive true
+    mode "0755"
+    action :create
+  end
+  # RHEL/Cent don't have this by default, but do read from it, go ahead and add it so
+  # mysql recipe doesn't bomb
+end
 
 include_recipe "mysql::client" unless platform_family?('windows') # No MySQL client on Windows
 

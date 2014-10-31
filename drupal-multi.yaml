@@ -112,10 +112,14 @@ parameters:
       Required: Server image used for all servers that are created as a part of
       this deployment.
     type: string
-    default: Ubuntu 12.04 LTS (Precise Pangolin)
+    default: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
     constraints:
     - allowed_values:
+      - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       - Ubuntu 12.04 LTS (Precise Pangolin)
+      - Debian 7 (Wheezy) (PVHVM)
+      - CentOS 6.5 (PVHVM)
+      - Red Hat Enterprise Linux 6.5 (PVHVM)
       description: Must be a supported operating system.
 
   database_server_flavor:
@@ -450,6 +454,8 @@ resources:
           values:
             fs.inotify.max_user_watches: 1000000
         drupal:
+          server_name: { get_param: domain }
+          server_alias: { get_param: domain }
           apache:
             port: "8080"
           version: { get_param: version }
@@ -482,9 +488,12 @@ resources:
             clients: { get_attr: [web_servers, privateIPv4] }
         run_list: ["recipe[apt]",
                    "recipe[rax-drupal-dir]",
+                   "recipe[rax-drupal::masterpredrupal]",
                    "recipe[drupal]",
+                   "recipe[rax-drupal::mastersetup]",
                    "recipe[rax-drupal::user]",
                    "recipe[rax-drupal::lsyncd]",
+                   "recipe[rax-drupal::apachepostsetup]",
                    "recipe[varnish::repo]",
                    "recipe[varnish]",
                    "recipe[rax-drupal::varnish]",

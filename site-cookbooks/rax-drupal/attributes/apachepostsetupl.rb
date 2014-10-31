@@ -1,6 +1,9 @@
-# Cookbook Name:: varnish
-# Recipe:: vmod-digest
-# Author:: Kelley Reynolds <kelley.reynolds@rubyscale.com>
+# coding: utf-8
+#
+# Cookbook Name:: rax-drupal
+# Attribute:: lsyncd.rb
+#
+# Copyright 2014
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +18,5 @@
 # limitations under the License.
 #
 
-package 'libmhash-dev'
-
-git_vmod "Digest" do
-  source "https://github.com/varnish/libvmod-digest.git"
-end
+default['drupal']['server_name'] = node[:fqdn]
+default['drupal']['server_alias'] = node[:fqdn]
