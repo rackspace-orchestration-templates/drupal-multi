@@ -58,7 +58,7 @@ test-cases:
       master_server_flavor: 2GB Standard Instance
       web_server_flavor: 2GB Standard Instance
       web_server_count: 1
-      image: Ubuntu 12.04 LTS (Precise Pangolin)
+      image: Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
       kitchen: https://github.com/rackspace-orchestration-templates/drupal-multi
       child_template: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
