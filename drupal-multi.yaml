@@ -119,7 +119,7 @@ parameters:
       - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
       - Debian 7 (Wheezy) (PVHVM)
       - CentOS 6.5 (PVHVM)
-      - Red Hat Enterprise Linux 6.5 (PVHVM)
+      - Red Hat Enterprise Linux 6.6 (PVHVM)
       description: Must be a supported operating system.
 
   database_server_flavor:

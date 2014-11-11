@@ -275,7 +275,7 @@ test-cases:
   create:
     parameters:
       web_server_count: 1
-      image: Red Hat Enterprise Linux 6.5 (PVHVM)
+      image: Red Hat Enterprise Linux 6.6 (PVHVM)
       kitchen: https://github.com/rackspace-orchestration-templates/drupal-multi
       child_template: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
