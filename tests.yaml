@@ -221,7 +221,7 @@ test-cases:
   create:
     parameters:
       web_server_count: 1
-      image: CentOS 6.5 (PVHVM)
+      image: CentOS 6 (PVHVM)
       kitchen: https://github.com/rackspace-orchestration-templates/drupal-multi
       child_template: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
     timeout: 60 # Deployment should complete in under 30 minutes
