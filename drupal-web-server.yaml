@@ -30,8 +30,8 @@ parameters:
       - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
       - Debian 7 (Wheezy) (PVHVM)
-      - CentOS 6 (PVHVM)
-      - Red Hat Enterprise Linux 6.6 (PVHVM)
+#      - CentOS 6 (PVHVM)
+#      - Red Hat Enterprise Linux 6 (PVHVM)
       description: Must be a supported operating system.
 
   flavor:
