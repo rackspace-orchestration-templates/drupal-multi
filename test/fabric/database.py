@@ -20,14 +20,13 @@ def mysql():
 
     packages = [holland_package, mysql_package]
     for pkg in packages:
-        assert package.installed(pkg)
+        assert package.installed(pkg), ('package ' + pkg + 'not found')
 
-    assert port.is_listening(3306)
-    assert process.is_up("mysqld")
+    assert port.is_listening(3306), '3306 not listening'
 
     root_my_cnf = "/root/.my.cnf"
-    assert file.exists(root_my_cnf)
-    assert file.mode_is(root_my_cnf, 600)
-    assert file.owner_is(root_my_cnf, "root")
-    assert process.is_up(mysql_process)
-    assert service.is_enabled(mysql_process)
+    assert file.exists(root_my_cnf), 'root my.cnf does not exist'
+    assert file.mode_is(root_my_cnf, 600), 'permissions are wrong on root my.cnf'
+    assert file.owner_is(root_my_cnf, "root"), 'owner is wrong on root my.cnf'
+    assert process.is_up(mysql_process), 'mysql is not running'
+    assert service.is_enabled(mysql_process), 'mysql is not enabled'
