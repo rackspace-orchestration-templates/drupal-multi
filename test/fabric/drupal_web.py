@@ -17,10 +17,10 @@ def drupal_is_responding():
 def check():
     env.platform_family = detect.detect()
 
-    assert file.is_dir("/var/www/vhosts")
-    assert port.is_listening(80)
-    assert port.is_listening(8080)
-    assert package.installed("varnish")
+    assert file.is_dir("/var/www/vhosts"), '/var/www/vhosts is wrong'
+    assert port.is_listening(80), 'port 80 not listening'
+    assert port.is_listening(8080), 'port 8080 not listening'
+    assert package.installed("varnish"), 'varnish not installed'
     assert drupal_is_responding(), 'Drupal did not respond as expected.'
 
     apache_process = 'apache2'
@@ -36,6 +36,6 @@ def check():
         raise ValueError('OS ' + env.platform_family +
                          ' unknown, update tests.')
 
-    assert package.installed(php_package)
-    assert process.is_up(apache_process)
-    assert service.is_enabled(apache_process)
+    assert package.installed(php_package), 'php not installed'
+    assert process.is_up(apache_process), 'apache is not running'
+    assert service.is_enabled(apache_process), 'apache is not enabled'
