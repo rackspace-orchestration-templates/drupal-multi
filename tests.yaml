@@ -18,6 +18,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -31,6 +32,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -44,6 +46,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
@@ -75,6 +78,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -88,6 +92,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -101,6 +106,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
@@ -129,6 +135,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -142,6 +149,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -155,6 +163,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
@@ -183,6 +192,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -196,6 +206,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -209,6 +220,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
@@ -238,6 +250,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -251,6 +264,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -264,6 +278,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
@@ -292,6 +307,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_master_ip } # Fetch from output-list of stack
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -305,6 +321,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: web_ips }
             tasks:
+              - artifacts
               - check
             abort_on_prompts: True
             connection_attempts: 3
@@ -318,6 +335,7 @@ test-cases:
             key_filename: tmp/private_key
             hosts: { get_output: database_server_ip }
             tasks:
+              - artifacts
               - mysql
             abort_on_prompts: True
             connection_attempts: 3
