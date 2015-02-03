@@ -1,5 +1,6 @@
 from fabric.api import env, task
 from envassert import detect, file, package, port, process, service
+from hot.utils.test import get_artifacts, http_check
 
 
 @task
@@ -31,3 +32,9 @@ def mysql():
     assert file.owner_is(root_my_cnf, "root"), 'owner is wrong on root my.cnf'
     assert process.is_up(mysql_process), 'mysql is not running'
     assert service.is_enabled(mysql_process), 'mysql is not enabled'
+
+
+@task
+def artifacts():
+    env.platform_family = detect.detect()
+    get_artifacts()
