@@ -26,7 +26,8 @@ def mysql():
 
     root_my_cnf = "/root/.my.cnf"
     assert file.exists(root_my_cnf), 'root my.cnf does not exist'
-    assert file.mode_is(root_my_cnf, 600), 'permissions are wrong on root my.cnf'
+    assert file.mode_is(root_my_cnf, 600), \
+        'permissions are wrong on root my.cnf'
     assert file.owner_is(root_my_cnf, "root"), 'owner is wrong on root my.cnf'
     assert process.is_up(mysql_process), 'mysql is not running'
     assert service.is_enabled(mysql_process), 'mysql is not enabled'
