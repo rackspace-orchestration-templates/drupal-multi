@@ -108,3 +108,4 @@ instructions: |
   recommend leveraging a multi server option. If content needs to be moved,
   instructions above regarding migrating an existing site may help with that
   transition.
+user-input-required: true
