@@ -114,7 +114,7 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Perfomrance, Debian 7
+- name: Performance, Debian 7
   create:
     parameters:
       web_server_count: 1
@@ -172,7 +172,7 @@ test-cases:
             fabfile: test/fabric/database.py # Path to envassert test
 
 
-- name: Perfomrance, CentOS 6
+- name: Performance, CentOS 6
   create:
     parameters:
       web_server_count: 1
@@ -229,7 +229,7 @@ test-cases:
             use_ssh_config: True
             fabfile: test/fabric/database.py # Path to envassert test
 
-- name: Perfomrance, Red Hat 6
+- name: Performance, Red Hat 6
   create:
     parameters:
       web_server_count: 1
