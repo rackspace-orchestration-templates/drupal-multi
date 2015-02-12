@@ -8,7 +8,7 @@ dependencies:
   - pip install git+https://github.com/JasonBoyles/bumper
 test:
   override:
-  - envshuffle test/util/circleci_parallelize_hot.py:
+  - envshuffle hot test --ci-parallel:
       parallel: true
 deployment:
   stable:
