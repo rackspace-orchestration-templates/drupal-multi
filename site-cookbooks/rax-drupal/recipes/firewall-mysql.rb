@@ -38,6 +38,7 @@ when "debian"
     port node['mysql']['port'].to_i
     protocol :tcp
     interface node['rax']['mysql']['interface']
+    action :allow
   end
 else
   include_recipe "firewall"
