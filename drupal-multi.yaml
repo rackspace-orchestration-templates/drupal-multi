@@ -210,10 +210,10 @@ parameters:
     label: Drupal Version
     description: Version of Drupal to install
     type: string
-    default: "7.32"
+    default: "7.35"
     constraints:
     - allowed_values:
-      - "7.32"
+      - "7.35"
 
   # Database and system user configuration
   database_name:
