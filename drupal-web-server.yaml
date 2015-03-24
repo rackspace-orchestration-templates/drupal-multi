@@ -122,7 +122,7 @@ parameters:
 resources:
   # Server resources
   drupal_server:
-    type: "Rackspace::Cloud::Server"
+    type: "OS::Nova::Server"
     properties:
       name: { get_param: server_hostname }
       flavor: { get_param: flavor }
@@ -183,4 +183,4 @@ outputs:
     value: { get_attr: [drupal_server, accessIPv4] }
 
   privateIPv4:
-    value: { get_attr: [drupal_server, privateIPv4] }
+    value: { get_attr: [drupal_server, networks, private, 0] }

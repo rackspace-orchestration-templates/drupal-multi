@@ -337,7 +337,7 @@ resources:
         rax-heat: { get_param: "OS::stack_id" }
 
   database_server:
-    type: "Rackspace::Cloud::Server"
+    type: "OS::Nova::Server"
     properties:
       name: { get_param: database_server_hostname }
       flavor: { get_param: database_server_flavor }
@@ -347,7 +347,7 @@ resources:
         rax-heat: { get_param: "OS::stack_id" }
 
   master_server:
-    type: "Rackspace::Cloud::Server"
+    type: "OS::Nova::Server"
     properties:
       name: { get_param: master_server_hostname }
       flavor: { get_param: master_server_flavor }
