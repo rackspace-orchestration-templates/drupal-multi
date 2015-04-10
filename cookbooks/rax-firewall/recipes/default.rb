@@ -33,7 +33,7 @@
         direction :in
         action    :allow
       end
-    when 'rhel', 'centos', 'debian'
+    when 'redhat', 'centos', 'debian'
       iptables_ng_rule "Firewall rule, #{proto}/#{listen_port}" do
         name       'Allow'
         chain      'INPUT'
