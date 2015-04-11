@@ -1,6 +1,7 @@
 source "http://api.berkshelf.com"
 
 cookbook 'apt'
+cookbook 'mysql', '5.6.0'
 cookbook 'drupal',
   :git => 'https://github.com/promet/drupal-cookbook'
 cookbook 'sysctl',
