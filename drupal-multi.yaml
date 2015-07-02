@@ -18,7 +18,8 @@ parameter_groups:
 
 - label: Database Settings
   parameters:
-  - database_server_flavor
+  - database_flavor
+  - database_size
 
 - label: Drupal Settings
   parameters:
@@ -35,6 +36,9 @@ parameter_groups:
   - load_balancer_hostname
   - web_server_hostnames
   - master_server_hostname
+  - database_version
+  - database_name
+  - database_username
 
 parameters:
 
@@ -185,6 +189,63 @@ parameters:
         Maximum length of 64 characters, may only contain letters, numbers, and
         underscores.
 
+  database_username:
+    label: Database Username
+    description: Drupal database username
+    type: string
+    default: drupal
+    constraints:
+    - allowed_pattern: "^[0-9a-zA-Z$_]{1,64}$"
+      description: |
+        Maximum length of 64 characters, may only contain letters, numbers, and
+        underscores.
+
+  database_flavor:
+    label: Cloud Database Size
+    description: |
+      Required: Rackspace Cloud Database Flavor. Size is based on amount of RAM
+      for the provisioned instance.
+    type: string
+    default: 1GB Instance
+    constraints:
+    - allowed_values:
+      - 512MB Instance
+      - 1GB Instance
+      - 2GB Instance
+      - 4GB Instance
+      - 8GB Instance
+      - 16GB Instance
+      - 32GB Instance
+      - 64GB Instance
+      description: |
+        Must be a valid Rackspace Cloud Database flavor for the region you have
+        selected to deploy into.
+
+  datastore_version:
+    label: MySQL Version
+    type: string
+    description: |
+      Required: Version of MySQL to run on the Cloud Databases instance.
+    default: "5.6"
+    constraints:
+    - allowed_values:
+      - "5.6"
+      - "5.1"
+
+  database_size:
+    label: Database Size
+    description: |
+      Required: Amount of storage required for your Rackspace Cloud Database,
+      in GB.
+    type: number
+    default: 10
+    constraints:
+    - range:
+        min: 10
+        max: 300
+    description: |
+        Database instance size, in GB. min 10, max 300
+
   ## The below parameters are for development purposes. Use the default
   ## settings for these parameters when attempting to deploy this stack.
   child_template:
@@ -218,6 +279,26 @@ resources:
     properties:
       name: { get_param: "OS::stack_id" }
       save_private_key: true
+
+  # Database instance
+  database_server:
+    type: OS::Trove::Instance
+    properties:
+      name:
+        str_replace:
+          template: "drupal_db_%stackid%"
+          params:
+            "%stackid%": { get_param: "OS::stack_id" }
+      flavor: { get_param: database_flavor }
+      size: { get_param: database_size }
+      datastore_type: mysql
+      datastore_version: { get_param: datastore_version }
+      databases:
+      - name: { get_param: database_name }
+      users:
+      - name: { get_param: database_username }
+        password: { get_resource: database_password }
+        databases: { get_param: database_name }
 
   # Server resources
   load_balancer:
