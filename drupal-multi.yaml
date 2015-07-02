@@ -355,15 +355,16 @@ resources:
           flavor: { get_param: web_server_flavor }
           domain: { get_param: domain }
           username: { get_param: username }
-          lsync_pub: { get_attr: [sync_key, public_key]}
-          ssh_keypair_name: { get_resource: ssh_key }
-          ssh_private_key: { get_attr: [ssh_key, private_key] }
-          parent_stack_id: { get_param: "OS::stack_id" }
-          varnish_master_backend: { get_attr: [master_server, networks, private, 0] }
+          drupal_password: { get_attr: [database_password, value] }
           database_name: { get_param: database_name }
           database_hostname: { get_attr: [database_server, hostname] }
           database_username: { get_param: database_username }
           database_password: { get_attr: [database_password, value] }
+          ssh_keypair_name: { get_resource: ssh_key }
+          ssh_private_key: { get_attr: [ssh_key, private_key] }
+          parent_stack_id: { get_param: "OS::stack_id" }
+          lsync_pub: { get_attr: [sync_key, public_key]}
+          varnish_master_backend: { get_attr: [master_server, networks, private, 0] }
 
 outputs:
   private_key:

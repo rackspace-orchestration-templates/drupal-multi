@@ -83,6 +83,22 @@ parameters:
     - allowed_pattern: "^[a-zA-Z0-9.-]{1,255}.[a-zA-Z]{2,15}$"
       description: Must be a valid domain name
 
+  username:
+    label: Username
+    description: "Username for the Drupal admin login"
+    type: string
+    default: admin
+    constraints:
+    - allowed_pattern: "^(.){1,16}$"
+      description: |
+        Must be shorter than 16 characters, this is due to MySQL's maximum
+        username length.
+
+  drupal_password:
+    description: drupal password from parent
+    type: string
+    default: "None"
+
   # Database and system user configuration
   database_name:
     label: Database Name
@@ -95,16 +111,20 @@ parameters:
         Maximum length of 64 characters, may only contain letters, numbers, and
         underscores.
 
-  username:
-    label: Username
-    description: "Username for the Drupal admin login"
+  database_hostname:
+    description: database hostname from parent
     type: string
-    default: admin
-    constraints:
-    - allowed_pattern: "^(.){1,16}$"
-      description: |
-        Must be shorter than 16 characters, this is due to MySQL's maximum
-        username length.
+    default: "None"
+
+  database_username:
+    description: database username from parent
+    type: string
+    default: "None"
+
+  database_password:
+    description: database password from parent
+    type: string
+    default: "None"
 
   parent_stack_id:
     description: ID of the parent stack for meta tags
@@ -128,11 +148,6 @@ parameters:
 
   varnish_master_backend:
     description: master server ip address for varnish
-    type: string
-    default: "None"
-
-  drupal_dir:
-    description: directory where drupal is setup
     type: string
     default: "None"
 
@@ -235,6 +250,7 @@ resources:
             wc_notify: { get_attr: ['wait_condition_handle', 'curl_cli'] }
             "%domain%": { get_param: domain }
             "%username%": { get_param: username }
+            "%drupal_password%": { get_param: drupal_password }
             "%database_name%": { get_param: database_name }
             "%database_hostname%": { get_param: database_hostname }
             "%database_username%": { get_param: database_username }
