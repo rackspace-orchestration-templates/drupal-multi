@@ -386,6 +386,7 @@ resources:
                       - drush
                       - php
                       - drupal
+                      - lsyncd
             # Example Pillar Data using %value% notation
             # See example pillar data from states repository.
               - path: /srv/pillar/localhost.sls
@@ -404,6 +405,8 @@ resources:
                     db_name: %database_name%
                     db_user: %database_username%
                     db_pass: %database_password%
+                  lsyncd:
+                    targets: %web_slave_ips%
                   varnish:
                     listen_port: 80
             # Salt Bootstrap script
@@ -437,6 +440,7 @@ resources:
             "%database_hostname%": { get_attr: [database_server, hostname] }
             "%database_username%": { get_param: database_username }
             "%database_password%": { get_attr: [database_password, value] }
+            "%web_slave_ips%": { get_attr: [web_servers, private_ip] }
 
   web_servers:
     type: "OS::Heat::ResourceGroup"
