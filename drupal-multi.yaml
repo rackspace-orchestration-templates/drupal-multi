@@ -409,6 +409,7 @@ resources:
                     targets: %web_slave_ips%
                   varnish:
                     listen_port: 80
+                    backend_master: %varnish_master_backend%
             # Salt Bootstrap script
               - path: /tmp/heat/salt_run.sh
                 permissions: '0500'
@@ -441,6 +442,7 @@ resources:
             "%database_username%": { get_param: database_username }
             "%database_password%": { get_attr: [database_password, value] }
             "%web_slave_ips%": { get_attr: [web_servers, private_ip] }
+            "%varnish_master_backend%": { get_attr: [master_server, networks, private, 0] }
 
   web_servers:
     type: "OS::Heat::ResourceGroup"

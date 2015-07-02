@@ -228,6 +228,7 @@ resources:
                     db_pass: %database_password%
                   varnish:
                     listen_port: 80
+                    backend_master: %varnish_master_backend%
             # Salt Bootstrap script
               - path: /tmp/heat/salt_run.sh
                 permissions: '0500'
@@ -259,6 +260,7 @@ resources:
             "%database_hostname%": { get_param: database_hostname }
             "%database_username%": { get_param: database_username }
             "%database_password%": { get_param: database_password }
+            "%varnish_master_backend%": { get_param: varnish_master_backend }
 
 outputs:
   public_ip:
