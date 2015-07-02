@@ -203,6 +203,7 @@ resources:
                     '*':
                       - salt-minion
                       - apache
+                      - varnish
                       - composer
                       - drush
                       - php
@@ -213,6 +214,7 @@ resources:
                 permissions: '0600'
                 content: |
                   apache:
+                    http_port: 8080
                     vhosts:
                       - domain: %domain%
                         docroot: /var/www/%domain%
@@ -224,6 +226,8 @@ resources:
                     db_name: %database_name%
                     db_user: %database_username%
                     db_pass: %database_password%
+                  varnish:
+                    listen_port: 80
             # Salt Bootstrap script
               - path: /tmp/heat/salt_run.sh
                 permissions: '0500'
