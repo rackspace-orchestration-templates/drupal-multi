@@ -253,7 +253,7 @@ parameters:
     description: |
       Location of the child template to use for the Drupal web servers
     type: string
-    default: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-web-server.yaml
+    default: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-single.yaml
 
 resources:
   # Random password generation
@@ -334,6 +334,8 @@ resources:
 
   master_server:
     type: "OS::Nova::Server"
+    depends_on:
+    - web_servers
     properties:
       name: { get_param: master_server_hostname }
       flavor: { get_param: master_server_flavor }
@@ -354,6 +356,8 @@ resources:
           image: { get_param: image }
           flavor: { get_param: web_server_flavor }
           domain: { get_param: domain }
+          database_name: { get_param: database_name }
+          username: { get_param: username }
           drupal_dir:
             str_replace:
               template: "/var/www/vhosts/%domain%"

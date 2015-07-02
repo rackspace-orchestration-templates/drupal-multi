@@ -106,6 +106,36 @@ parameters:
         Must be shorter than 16 characters, this is due to MySQL's maximum
         username length.
 
+  parent_stack_id:
+    description: ID of the parent stack for meta tags
+    type: string
+    default: "None"
+
+  ssh_keypair_name:
+    description: keypair from parent template
+    type: string
+    default: "None"
+
+  lsync_pub:
+    description: lsync public key from parent
+    type: string
+    default: "None"
+
+  ssh_private_key:
+    description: private key from parent template
+    type: string
+    default: "None"
+
+  varnish_master_backend:
+    description: master server ip address for varnish
+    type: string
+    default: "None"
+
+  drupal_dir:
+    description: directory where drupal is setup
+    type: string
+    default: "None"
+
 resources:
 
   wait_condition:
@@ -117,32 +147,6 @@ resources:
   wait_condition_handle:
     type: OS::Heat::SwiftSignalHandle
 
-  # Random password generation
-  database_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  drupal_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_root_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  # SSH KEYS
-  ssh_key:
-    type: "OS::Nova::KeyPair"
-    properties:
-      name: { get_param: "OS::stack_id" }
-      save_private_key: true
-
   # Server resources
   drupal_server:
     type: "OS::Nova::Server"
@@ -150,9 +154,9 @@ resources:
       name: { get_param: server_hostname }
       flavor: { get_param: flavor }
       image: { get_param: image }
-      key_name: { get_resource: ssh_key }
+      key_name: { get_param: ssh_keypair_name }
       metadata:
-        rax-heat: { get_param: "OS::stack_id" }
+        rax-heat: { get_param: parent_stack_id }
       config_drive: "true"
       user_data_format: RAW
       user_data:
@@ -186,10 +190,6 @@ resources:
                       - apache
                       - composer
                       - drush
-                      - mysql
-                      - mysql.database
-                      - mysql.user
-                      - mysql.grant
                       - php
                       - drupal
             # Example Pillar Data using %value% notation
@@ -209,19 +209,6 @@ resources:
                     db_name: %database_name%
                     db_user: drupal_user
                     db_pass: %database_password%
-                  mysql:
-                    root_password: %mysql_root_password%
-                  mysql-database:
-                    name: %database_name%
-                  mysql-grant:
-                    user: drupal_user
-                    database: %database_name%
-                    host: localhost
-                    grants: all privileges
-                  mysql-user:
-                    user: drupal_user
-                    pass: %database_password%
-                    host: localhost
             # Salt Bootstrap script
               - path: /tmp/heat/salt_run.sh
                 permissions: '0500'
@@ -246,38 +233,11 @@ resources:
               - /tmp/heat/salt_run.sh
           params:
             wc_notify: { get_attr: ['wait_condition_handle', 'curl_cli'] }
-            "%mysql_root_password%": { get_attr: [mysql_root_password, value] }
-            "%drupal_password%": { get_attr: [drupal_password, value] }
-            "%database_password%": { get_attr: [database_password, value] }
             "%domain%": { get_param: domain }
             "%username%": { get_param: username }
             "%database_name%": { get_param: database_name }
 
 outputs:
-  private_key:
-    description: SSH Private Key
-    value: { get_attr: [ssh_key, private_key] }
-
-  server_ip:
+  public_ip:
     description: Server IP
     value: { get_attr: [drupal_server, accessIPv4] }
-
-  drupal_url:
-    description: Drupal URL
-    value:
-      str_replace:
-        template: "http://%ip%"
-        params:
-          "%ip%": { get_attr: [drupal_server, accessIPv4] }
-
-  drupal_user:
-    description: Drupal User
-    value: { get_param: username }
-
-  drupal_password:
-    description: Drupal Password
-    value: { get_attr: [drupal_password, value] }
-
-  mysql_root_password:
-    description: MySQL Root Password
-    value: { get_attr: [mysql_root_password, value] }
