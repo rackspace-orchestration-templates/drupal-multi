@@ -31,14 +31,11 @@ parameter_groups:
   # different setups. If any of these parameters are changed, there is a good
   # chance this stack will fail to properly deploy.
   parameters:
-  - kitchen
-  - chef_version
   - child_template
-  - version
+  - drupal_version
   - load_balancer_hostname
   - web_server_hostnames
   - master_server_hostname
-  - database_server_hostname
 
 parameters:
 
@@ -48,19 +45,6 @@ parameters:
     description: Hostname for the Cloud Load Balancer
     type: string
     default: Drupal-Load-Balancer
-    constraints:
-    - length:
-        min: 1
-        max: 64
-    - allowed_pattern: "^[a-zA-Z][a-zA-Z0-9-]*$"
-      description: |
-        Must begin with a letter and contain only alphanumeric characters.
-
-  database_server_hostname:
-    label: Server Name
-    description: Hostname to use for your Drupal Database Server
-    type: string
-    default: Drupal-Database
     constraints:
     - length:
         min: 1
@@ -116,34 +100,7 @@ parameters:
     constraints:
     - allowed_values:
       - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-      - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
-      - Debian 7 (Wheezy) (PVHVM)
-      - CentOS 6 (PVHVM)
-      - Red Hat Enterprise Linux 6 (PVHVM)
       description: Must be a supported operating system.
-
-  database_server_flavor:
-    label: Server Size
-    description: |
-      Cloud Server size to use for the database server. Sizes refer to the
-      amount of RAM allocated to the server.
-    type: string
-    default: 4 GB General Purpose v1
-    constraints:
-    - allowed_values:
-      - 2 GB General Purpose v1
-      - 4 GB General Purpose v1
-      - 8 GB General Purpose v1
-      - 15 GB I/O v1
-      - 30 GB I/O v1
-      - 2GB Standard Instance
-      - 4GB Standard Instance
-      - 8GB Standard Instance
-      - 15GB Standard Instance
-      - 30GB Standard Instance
-      description: |
-        Must be a valid Rackspace Cloud Server flavor for the region you have
-        selected to deploy into.
 
   master_server_flavor:
     label: Master Server Size
@@ -206,7 +163,7 @@ parameters:
     - allowed_pattern: "^[a-zA-Z0-9.-]{1,255}.[a-zA-Z]{2,15}$"
       description: Must be a valid domain name
 
-  version:
+  drupal_version:
     label: Drupal Version
     description: Version of Drupal to install
     type: string
@@ -214,6 +171,17 @@ parameters:
     constraints:
     - allowed_values:
       - "7.35"
+
+  username:
+    label: Username
+    description: "Username for the Drupal admin login"
+    type: string
+    default: admin
+    constraints:
+    - allowed_pattern: "^(.){1,16}$"
+      description: |
+        Must be shorter than 16 characters, this is due to MySQL's maximum
+        username length.
 
   # Database and system user configuration
   database_name:
@@ -227,33 +195,8 @@ parameters:
         Maximum length of 64 characters, may only contain letters, numbers, and
         underscores.
 
-  username:
-    label: Username
-    description: "Username for the Drupal admin login"
-    type: string
-    default: admin
-    constraints:
-    - allowed_pattern: "^(.){1,16}$"
-      description: |
-        Must be shorter than 16 characters, this is due to MySQL's maximum
-        username length.
-
   ## The below parameters are for development purposes. Use the default
   ## settings for these parameters when attempting to deploy this stack.
-  # Chef configuration options
-  kitchen:
-    label: Kitchen
-    description: |
-      URL for the kitchen to use, fetched using git
-    type: string
-    default: https://github.com/rackspace-orchestration-templates/drupal-multi
-
-  chef_version:
-    label: Chef Version
-    description: Version of chef client to use
-    type: string
-    default: 11.16.4
-
   child_template:
     label: Child Template
     description: |
@@ -270,18 +213,6 @@ resources:
       sequence: lettersdigits
 
   mysql_root_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_repl_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_debian_password:
     type: "OS::Heat::RandomString"
     properties:
       length: 16
@@ -336,16 +267,6 @@ resources:
       metadata:
         rax-heat: { get_param: "OS::stack_id" }
 
-  database_server:
-    type: "OS::Nova::Server"
-    properties:
-      name: { get_param: database_server_hostname }
-      flavor: { get_param: database_server_flavor }
-      image: { get_param: image }
-      key_name: { get_resource: ssh_key }
-      metadata:
-        rax-heat: { get_param: "OS::stack_id" }
-
   master_server:
     type: "OS::Nova::Server"
     properties:
@@ -372,134 +293,12 @@ resources:
               template: "/var/www/vhosts/%domain%"
               params:
                 "%domain%": { get_param: domain }
-          # ssl_private_key: { get_param: ssl_private_key }
-          # ssl_certificate: { get_param: ssl_certificate }
-          # ssl_intermediate_certs: { get_param: ssl_intermediate_certs }
           lsync_pub: { get_attr: [sync_key, public_key]}
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key: { get_attr: [ssh_key, private_key] }
-          kitchen: { get_param: kitchen }
-          version: { get_param: version }
-          chef_version: { get_param: chef_version }
+          drupal_version: { get_param: drupal_version }
           parent_stack_id: { get_param: "OS::stack_id" }
           varnish_master_backend: { get_attr: [master_server, networks, private, 0] }
-
-  # Chef resources
-  database_server_setup:
-    type: "OS::Heat::ChefSolo"
-    depends_on: database_server
-    properties:
-      username: root
-      private_key: { get_attr: [ssh_key, private_key] }
-      host: { get_attr: [database_server, accessIPv4] }
-      kitchen: { get_param: kitchen }
-      chef_version: { get_param: chef_version }
-      node:
-        drupal:
-          db:
-            name: { get_param: database_name }
-            user: { get_param: username }
-            pass: { get_attr: [database_password, value] }
-            host: { get_attr: [database_server, networks, private, 0] }
-        hollandbackup:
-          main:
-            backup_directory: "/var/lib/mysqlbackup"
-            mysqldump:
-              user: "root"
-              host: "localhost"
-              password: { get_attr: [mysql_root_password, value] }
-        mysql:
-          server_root_password: { get_attr: [mysql_root_password, value] }
-          server_repl_password: { get_attr: [mysql_repl_password, value] }
-          server_debian_password: { get_attr: [mysql_debian_password, value] }
-          remove_test_database: true
-          remove_anonymous_users: true
-          root_network_acl: ['10.%']
-        rax:
-          mysql:
-            innodb_buffer_pool_mempercent: 0.6
-        run_list: ["recipe[apt]",
-                   "recipe[mysql::server]",
-                   "recipe[dotmy-cnf]",
-                   "recipe[hollandbackup]",
-                   "recipe[hollandbackup::mysqldump]",
-                   "recipe[hollandbackup::main]",
-                   "recipe[hollandbackup::backupsets]",
-                   "recipe[hollandbackup::cron]",
-                   "recipe[rax-drupal::firewall-mysql]"]
-
-  master_server_setup:
-    type: "OS::Heat::ChefSolo"
-    depends_on:
-    - database_server_setup
-    - web_servers
-    properties:
-      username: root
-      private_key: { get_attr: [ssh_key, private_key] }
-      host: { get_attr: [master_server, accessIPv4] }
-      kitchen: { get_param: kitchen }
-      chef_version: { get_param: chef_version }
-      node:
-        apache:
-          listen_ports: [8080]
-          timeout: 30
-          serversignature: "Off"
-          traceenable: "Off"
-        varnish:
-          listen_port: "80"
-          version: "3.0"
-        lsyncd:
-          interval: 5
-        sysctl:
-          values:
-            fs.inotify.max_user_watches: 1000000
-        drupal:
-          server_name: { get_param: domain }
-          server_alias: { get_param: domain }
-          apache:
-            port: "8080"
-          version: { get_param: version }
-          dir:
-            str_replace:
-              template: "/var/www/vhosts/%domain%"
-              params:
-                "%domain%": { get_param: domain }
-          db:
-            name: { get_param: database_name }
-            user: { get_param: username }
-            pass: { get_attr: [database_password, value] }
-            host: { get_attr: [database_server, networks, private, 0] }
-          site:
-            admin: { get_param: username }
-            pass: { get_attr: [database_password, value] }
-            host: '10.%'
-        mysql:
-          server_root_password: { get_attr: [mysql_root_password, value] }
-        rax:
-          apache:
-            domain: { get_param: domain }
-          varnish:
-            backend_host: "localhost"
-          firewall:
-            tcp: [80]
-          lsyncd:
-            ssh:
-              private_key: { get_attr: [sync_key, private_key] }
-            clients: { get_attr: [web_servers, privateIPv4] }
-        run_list: ["recipe[apt]",
-                   "recipe[rax-drupal-dir]",
-                   "recipe[rax-drupal::masterpredrupal]",
-                   "recipe[drupal]",
-                   "recipe[rax-drupal::mastersetup]",
-                   "recipe[rax-drupal::user]",
-                   "recipe[rax-drupal::lsyncd]",
-                   "recipe[rax-drupal::apachepostsetup]",
-                   "recipe[varnish::repo]",
-                   "recipe[varnish]",
-                   "recipe[rax-drupal::varnish]",
-                   "recipe[rax-drupal::varnish-firewall]",
-                   "recipe[sysctl::attribute_driver]",
-                   "recipe[rax-firewall]"]
 
 outputs:
   private_key:
