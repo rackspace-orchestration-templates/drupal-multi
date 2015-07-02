@@ -255,6 +255,16 @@ parameters:
     default: https://raw.githubusercontent.com/rackspace-orchestration-templates/drupal-multi/master/drupal-single.yaml
 
 resources:
+
+  wait_condition:
+    type: OS::Heat::SwiftSignal
+    properties:
+      handle: { get_resource: wait_condition_handle }
+      timeout: 1800
+
+  wait_condition_handle:
+    type: OS::Heat::SwiftSignalHandle
+
   # Random password generation
   database_password:
     type: "OS::Heat::RandomString"
