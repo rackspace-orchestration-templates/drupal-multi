@@ -297,7 +297,7 @@ resources:
       users:
       - name: { get_param: database_username }
         password: { get_resource: database_password }
-        databases: { get_param: database_name }
+        databases: [ { get_param: database_name } ]
 
   # Server resources
   load_balancer:
