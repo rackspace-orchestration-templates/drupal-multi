@@ -73,7 +73,7 @@ parameters:
         Must be a valid Rackspace Cloud Server flavor for the region you have
         selected to deploy into.
 
-  # Durpal settings
+  # Drupal settings
   domain:
     label: Site Domain
     description: Domain to be used with the Drupal site

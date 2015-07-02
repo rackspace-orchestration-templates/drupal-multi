@@ -32,7 +32,6 @@ parameter_groups:
   # chance this stack will fail to properly deploy.
   parameters:
   - child_template
-  - drupal_version
   - load_balancer_hostname
   - web_server_hostnames
   - master_server_hostname
@@ -163,15 +162,6 @@ parameters:
     - allowed_pattern: "^[a-zA-Z0-9.-]{1,255}.[a-zA-Z]{2,15}$"
       description: Must be a valid domain name
 
-  drupal_version:
-    label: Drupal Version
-    description: Version of Drupal to install
-    type: string
-    default: "7.35"
-    constraints:
-    - allowed_values:
-      - "7.35"
-
   username:
     label: Username
     description: "Username for the Drupal admin login"
@@ -207,12 +197,6 @@ parameters:
 resources:
   # Random password generation
   database_password:
-    type: "OS::Heat::RandomString"
-    properties:
-      length: 16
-      sequence: lettersdigits
-
-  mysql_root_password:
     type: "OS::Heat::RandomString"
     properties:
       length: 16
@@ -276,6 +260,7 @@ resources:
       key_name: { get_resource: ssh_key }
       metadata:
         rax-heat: { get_param: "OS::stack_id" }
+##### Add cloud-init for the master including lsync #####
 
   web_servers:
     type: "OS::Heat::ResourceGroup"
@@ -296,7 +281,6 @@ resources:
           lsync_pub: { get_attr: [sync_key, public_key]}
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key: { get_attr: [ssh_key, private_key] }
-          drupal_version: { get_param: drupal_version }
           parent_stack_id: { get_param: "OS::stack_id" }
           varnish_master_backend: { get_attr: [master_server, networks, private, 0] }
 
@@ -325,10 +309,6 @@ outputs:
     value: { get_attr: [database_password, value] }
     description: Drupal Password
 
-  database_server_ip:
-    value: { get_attr: [database_server, accessIPv4] }
-    description: Database Server IP
-
   web_master_ip:
     value: { get_attr: [master_server, accessIPv4] }
     description: Web-Master IP
@@ -336,7 +316,3 @@ outputs:
   web_ips:
     value: { get_attr: [web_servers, accessIPv4] }
     description: Web Server IPs
-
-  mysql_root_password:
-    value: { get_attr: [mysql_root_password, value] }
-    description: MySQL Root Password
