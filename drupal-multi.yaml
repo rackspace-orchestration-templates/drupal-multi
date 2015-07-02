@@ -36,7 +36,6 @@ parameter_groups:
   - load_balancer_hostname
   - web_server_hostnames
   - master_server_hostname
-  - database_version
   - database_name
   - database_username
 
