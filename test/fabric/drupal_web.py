@@ -11,9 +11,8 @@ def check():
     string = "Welcome to Drupal7"
     apache_process = 'apache2'
     php_package = 'php5'
-    docroot = "/var/www/{0}".format(env.domain)
 
-    assert file.is_dir(docroot), "Docroot doesn't exist"
+    assert file.is_dir('/var/www/example.com'), "Docroot doesn't exist"
     assert port.is_listening(80), 'port 80 not listening'
     assert port.is_listening(8080), 'port 8080 not listening'
     assert package.installed("varnish"), 'varnish not installed'
