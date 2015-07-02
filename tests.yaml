@@ -24,6 +24,7 @@ test-cases:
             disable_known_hosts: True
             use_ssh_config: True
             fabfile: test/fabric/drupal_web.py
+            domain: { get_param: domain }
     - drupal_web_servers:
         fabric:
           env:
@@ -38,3 +39,4 @@ test-cases:
             disable_known_hosts: True
             use_ssh_config: True
             fabfile: test/fabric/drupal_web.py
+            domain: { get_param: domain }
