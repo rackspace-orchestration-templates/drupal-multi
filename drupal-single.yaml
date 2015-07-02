@@ -205,9 +205,9 @@ resources:
                     domain: %domain%
                     admin_user: %username%
                     admin_pass: %drupal_password%
-                    db_host: localhost
+                    db_host: %database_hostname%
                     db_name: %database_name%
-                    db_user: drupal_user
+                    db_user: %database_username%
                     db_pass: %database_password%
             # Salt Bootstrap script
               - path: /tmp/heat/salt_run.sh
@@ -236,8 +236,14 @@ resources:
             "%domain%": { get_param: domain }
             "%username%": { get_param: username }
             "%database_name%": { get_param: database_name }
+            "%database_hostname%": { get_param: database_hostname }
+            "%database_username%": { get_param: database_username }
+            "%database_password%": { get_param: database_password }
 
 outputs:
   public_ip:
     description: Server IP
     value: { get_attr: [drupal_server, accessIPv4] }
+
+  private_ip:
+    value: { get_attr: [drupal_server, networks, private, 0]}

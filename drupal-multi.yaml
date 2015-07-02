@@ -312,7 +312,7 @@ resources:
       - addresses: [ { get_attr: [master_server, networks, private, 0] } ]
         port: 80
         condition: ENABLED
-      - addresses: { get_attr: [web_servers, privateIPv4] }
+      - addresses: { get_attr: [web_servers, private_ip] }
         port: 80
         condition: ENABLED
       healthMonitor:
@@ -334,8 +334,6 @@ resources:
 
   master_server:
     type: "OS::Nova::Server"
-    depends_on:
-    - web_servers
     properties:
       name: { get_param: master_server_hostname }
       flavor: { get_param: master_server_flavor }
@@ -356,18 +354,16 @@ resources:
           image: { get_param: image }
           flavor: { get_param: web_server_flavor }
           domain: { get_param: domain }
-          database_name: { get_param: database_name }
           username: { get_param: username }
-          drupal_dir:
-            str_replace:
-              template: "/var/www/vhosts/%domain%"
-              params:
-                "%domain%": { get_param: domain }
           lsync_pub: { get_attr: [sync_key, public_key]}
           ssh_keypair_name: { get_resource: ssh_key }
           ssh_private_key: { get_attr: [ssh_key, private_key] }
           parent_stack_id: { get_param: "OS::stack_id" }
           varnish_master_backend: { get_attr: [master_server, networks, private, 0] }
+          database_name: { get_param: database_name }
+          database_hostname: { get_attr: [database_server, hostname] }
+          database_username: { get_param: database_username }
+          database_password: { get_attr: [database_password, value] }
 
 outputs:
   private_key:
