@@ -303,7 +303,7 @@ resources:
   load_balancer:
     type: "Rackspace::Cloud::LoadBalancer"
     depends_on:
-    - master_server_setup
+    - master_server
     - web_servers
     properties:
       name: { get_param: load_balancer_hostname }
