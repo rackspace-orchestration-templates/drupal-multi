@@ -1,8 +1,15 @@
 heat_template_version: 2013-05-23
 
 description: |
-  This is a Heat template to deploy Load Balanced Drupal servers with a
-  backend database server.
+  #### Multiple Servers
+
+  Multiple Linux servers with [Drupal](https://drupal.org/) installed with
+  [Apache](http://httpd.apache.org/) and
+  [Lsyncd](https://code.google.com/p/lsyncd/) balanced with a Cloud
+  Load Balancer. The database server will be deployed with
+  [MySQL 5.5](http://www.mysql.com/). This deployment is intended for
+  development and production use cases incurring medium to high traffic
+  scenarios. It is highly scalable and is appropriate for high traffic events.
 
 parameter_groups:
 
