@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-10-15
 
 description: |
   #### Multiple Servers
@@ -394,7 +394,6 @@ resources:
   # Chef resources
   database_server_setup:
     type: "OS::Heat::ChefSolo"
-    depends_on: database_server
     properties:
       username: root
       private_key: { get_attr: [ssh_key, private_key] }
@@ -426,7 +425,7 @@ resources:
           mysql:
             innodb_buffer_pool_mempercent: 0.6
         run_list: ["recipe[apt]",
-                   "recipe[mysql::server]",
+                   "recipe[heatmysql]",
                    "recipe[dotmy-cnf]",
                    "recipe[hollandbackup]",
                    "recipe[hollandbackup::mysqldump]",
