@@ -15,4 +15,4 @@ cookbook 'rax-firewall',
 cookbook 'lsyncd',
   :git => 'https://github.com/dgivens/chef-lsyncd.git'
 cookbook 'varnish',
-  :git => 'https://github.com/opscode-cookbooks/varnish'
+  :git => 'https://github.com/rackspace-cookbooks/varnish'

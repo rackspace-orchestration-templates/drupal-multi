@@ -28,6 +28,7 @@ class Chef
         end
 
         install_varnish
+        define_systemd_daemon_reload if node['init_package'] == 'systemd'
       end
 
       def add_vendor_repo
@@ -39,7 +40,6 @@ class Chef
             components ["varnish-#{new_resource.vendor_version}"]
             key "http://repo.varnish-cache.org/#{node['platform']}/GPG-key.txt"
             deb_src true
-            notifies 'nothing', 'execute[apt-get update]', 'immediately'
           end
         when 'rhel', 'fedora'
           yum_repository 'varnish' do
@@ -62,6 +62,13 @@ class Chef
         service 'varnish' do
           supports restart: true, reload: true
           action 'nothing'
+        end
+      end
+
+      def define_systemd_daemon_reload
+        execute 'systemctl-daemon-reload' do
+          command '/bin/systemctl --system daemon-reload'
+          action :nothing
         end
       end
     end

@@ -31,6 +31,9 @@ default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 # See https://github.com/chr4-cookbooks/iptables-ng/pull/42 for more details.
 default['iptables-ng']['managed_service'] = true
 
+# Configure whether to automatically clean up unused rules
+default['iptables-ng']['auto_prune_attribute_rules'] = false
+
 # Enable nat support for ipv6
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
 default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
@@ -61,13 +64,19 @@ when 'debian'
   # Debian squeeze (and before) only support an outdated version
   # of iptables-persistent, which is not capable of ipv6.
   # Furthermore, restarting the service doesn't properly reload the rules
+  if node['platform_version'].to_f >= 8.0
+    default['iptables-ng']['service_ipv4'] = 'netfilter-persistent'
+    default['iptables-ng']['service_ipv6'] = 'netfilter-persistent'
+  elsif node['platform_version'].to_f >= 7.0
+    default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
+    default['iptables-ng']['service_ipv6'] = 'iptables-persistent'
+  end
+
   if node['platform_version'].to_f < 7.0
     # default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
     default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules'
     default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
   else
-    default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
-    default['iptables-ng']['service_ipv6'] = 'iptables-persistent'
     default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
     default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
   end

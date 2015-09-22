@@ -5,7 +5,7 @@
 # Copyright 2012-2014, David Joos
 #
 
-include_recipe "heatmysql::client"
+include_recipe "mysql::client"
 
 package "holland-mysqldump" do
     action :upgrade

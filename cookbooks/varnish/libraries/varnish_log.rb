@@ -20,53 +20,6 @@ class Chef
     end
   end
 
-  # varnish and varnish(log|ncsa) services sometimes enter a race
-  # condition. This wrapper causes Chef to pause before restarting
-  # these services, and it will rescue up to 5 times.
-  module ProviderExtensions
-    def restart_service
-      tries ||= 5
-      begin
-        if @new_resource.service_name =~ /varnish(log|ncsa)/
-          sleep 5
-        end
-        super
-      rescue
-        retry unless (tries -= 1).zero?
-      end
-    end
-
-    def start_service
-      tries ||= 5
-      begin
-        if @new_resource.service_name =~ /varnish(log|ncsa)/
-          sleep 5
-        end
-        super
-      rescue
-        retry unless (tries -= 1).zero?
-      end
-    end
-  end
-
-  class Provider
-    class Service
-      # Add functionality to restart and start services.
-      class Init
-        prepend ProviderExtensions
-      end
-    end
-  end
-
-  class Provider
-    class Service
-      # Add functionality to restart and start services.
-      class Systemd
-        prepend ProviderExtensions
-      end
-    end
-  end
-
   class Provider
     # Configure Varnish logging.
     class VarnishLog < Chef::Provider::LWRPBase
@@ -82,12 +35,13 @@ class Chef
 
       def configure_varnish_log
         template "/etc/default/#{new_resource.log_format}" do
-          if node['platform_family'] == 'debian'
+          if node['init_package'] == 'init'
             path "/etc/default/#{new_resource.log_format}"
             source 'lib_varnishlog.erb'
           elsif node['init_package'] == 'systemd'
-            path "/etc/systemd/system/#{new_resource.log_format}.params"
+            path "/etc/systemd/system/#{new_resource.log_format}.service"
             source 'lib_varnishlog_systemd.erb'
+            notifies :run, 'execute[systemctl-daemon-reload]', :immediately
           else
             path "/etc/sysconfig/#{new_resource.log_format}"
             source 'lib_varnishlog.erb'
@@ -119,6 +73,9 @@ class Chef
         service new_resource.log_format do
           supports restart: true, reload: true
           action %w(enable start)
+          retries 5
+          retry_delay 5
+          only_if { sleep(15) }
         end
       end
     end
