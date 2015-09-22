@@ -39,7 +39,7 @@ end
 
 end
 
-include_recipe "mysql::client"
+include_recipe "heatmysql::client"
 
 if node['rax']['lsyncd']['ssh']['pub']
   include_recipe 'rax-drupal::user'

@@ -28,7 +28,7 @@ when 'rhel', 'fedora'
   # mysql recipe doesn't bomb
 end
 
-include_recipe "mysql::client" unless platform_family?('windows') # No MySQL client on Windows
+include_recipe "heatmysql::client" unless platform_family?('windows') # No MySQL client on Windows
 
 db = node['drupal']['db']
 

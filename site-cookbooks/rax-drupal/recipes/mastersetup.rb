@@ -38,7 +38,7 @@ when 'rhel', 'fedora'
   end
 end
 
-include_recipe "mysql::client"
+include_recipe "heatmysql::client"
 
 execute "disable-default-site" do
    command "sudo a2dissite default"
