@@ -7,13 +7,15 @@ mysql_service 'default' do
   port node[:mysql][:port]
   bind_address node[:mysql][:bind_address]
   initial_root_password node[:mysql][:server_root_password]
+  socket '/var/run/mysqld/mysqld.sock'
   action [:create, :start]
 end
 
 mysql_connection_info = {
   :host => 'localhost',
   :username => 'root',
-  :password => node[:mysql][:server_root_password]
+  :password => node[:mysql][:server_root_password],
+  :socket => '/var/run/mysql-default/mysqld.sock'
 }
 
 mysql_database_user 'root' do

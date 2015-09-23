@@ -32,9 +32,9 @@ when 'rhel', 'fedora'
 end
 
 if node['drupal']['site']['host'] == "localhost"
-  include_recipe "mysql::server"
+  include_recipe "heatmysql"
 else
-  include_recipe "mysql::client"
+  include_recipe "heatmysql::client"
 end
 
 execute "mysql-install-drupal-privileges" do
