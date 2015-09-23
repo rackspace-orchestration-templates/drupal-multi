@@ -1,6 +1,6 @@
 class Chef
   class Provider
-    class MysqlChefGem
+    class Mysql2ChefGem
       class Mysql < Chef::Provider::LWRPBase
         include Chef::DSL::IncludeRecipe
         use_inline_resources if defined?(use_inline_resources)
@@ -18,7 +18,7 @@ class Chef
             action :create
           end
 
-          gem_package 'mysql' do
+          gem_package 'mysql2' do
             gem_binary RbConfig::CONFIG['bindir'] + '/gem'
             version new_resource.gem_version
             action :install
@@ -26,7 +26,7 @@ class Chef
         end
 
         action :remove do
-          gem_package 'mysql' do
+          gem_package 'mysql2' do
             gem_binary RbConfig::CONFIG['bindir'] + '/gem'
             action :remove
           end
