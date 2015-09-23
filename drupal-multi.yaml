@@ -417,6 +417,7 @@ resources:
         mysql:
           server_root_password: { get_attr: [mysql_root_password, value] }
           port: "3306"
+          bind_address: { get_attr: [ database_server, networks, private, 0 ] }
           server_repl_password: { get_attr: [mysql_repl_password, value] }
           server_debian_password: { get_attr: [mysql_debian_password, value] }
           remove_test_database: true
