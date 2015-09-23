@@ -7,3 +7,5 @@ version '0.0.1'
 name 'heatmysql'
 
 depends 'mysql'
+depends 'database'
+depends 'mysql_chef_gem'

@@ -34,7 +34,7 @@ end
 if node['drupal']['site']['host'] == "localhost"
   include_recipe "mysql::server"
 else
-  include_recipe "heatmysql::client"
+  include_recipe "mysql::client"
 end
 
 execute "mysql-install-drupal-privileges" do

@@ -1,6 +1,8 @@
 source "https://supermarket.chef.io/"
 
 cookbook 'apt'
+cookbook 'database'
+cookbook 'mysql_chef_gem'
 cookbook 'drupal',
   :git => 'https://github.com/promet/drupal-cookbook'
 cookbook 'sysctl',
