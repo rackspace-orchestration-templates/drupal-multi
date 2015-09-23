@@ -8,4 +8,4 @@ name 'heatmysql'
 
 depends 'mysql'
 depends 'database'
-depends 'mysql_chef_gem'
+depends 'mysql2_chef_gem'
