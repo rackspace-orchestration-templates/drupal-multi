@@ -20,8 +20,6 @@ mysql_connection_info = {
 mysql_database_user 'root' do
   connection mysql_connection_info
   password node[:mysql][:server_root_password]
-  host node[:mysql][:root_network_acl]
-  database_name '*'
-  privileges [:all]
+  host '%'
   action :grant
 end
