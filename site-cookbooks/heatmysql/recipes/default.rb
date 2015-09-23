@@ -15,7 +15,6 @@ mysql_connection_info = {
   :host => 'localhost',
   :username => 'root',
   :password => node[:mysql][:server_root_password],
-  :socket => '/var/run/mysql-default/mysqld.sock'
 }
 
 mysql_database_user 'root' do
