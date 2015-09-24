@@ -7,6 +7,7 @@
     Options FollowSymLinks
     Order allow,deny
     Allow from all
+    Require all granted
   </Directory>
 
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log

@@ -321,10 +321,10 @@ resources:
       name: { get_param: load_balancer_hostname }
       nodes:
       - addresses: [ { get_attr: [master_server, networks, private, 0] } ]
-        port: 80
+        port: 8080
         condition: ENABLED
       - addresses: { get_attr: [web_servers, privateIPv4] }
-        port: 80
+        port: 8080
         condition: ENABLED
       healthMonitor:
         type: HTTP
@@ -415,13 +415,9 @@ resources:
               host: "localhost"
               password: { get_attr: [mysql_root_password, value] }
         mysql:
-          server_root_password: { get_attr: [mysql_root_password, value] }
           port: "3306"
+          server_root_password: { get_attr: [mysql_root_password, value] }
           bind_address: { get_attr: [ database_server, networks, private, 0 ] }
-          server_repl_password: { get_attr: [mysql_repl_password, value] }
-          server_debian_password: { get_attr: [mysql_debian_password, value] }
-          remove_test_database: true
-          remove_anonymous_users: true
           root_network_acl: '%'
         rax:
           mysql:
