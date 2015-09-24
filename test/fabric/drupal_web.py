@@ -6,7 +6,7 @@ from hot.utils.test import get_artifacts, http_check
 
 def drupal_is_responding():
     with hide('running', 'stdout'):
-        site = "http://localhost/"
+        site = "http://localhost:8080/"
         homepage = run("wget --quiet --output-document - %s" % site)
     if re.search('Welcome to Drupal7', homepage):
         return True

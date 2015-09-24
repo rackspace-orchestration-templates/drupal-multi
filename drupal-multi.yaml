@@ -13,10 +13,6 @@ description: |
 
 parameter_groups:
 
-- label: Server Settings
-  parameters:
-  - image
-
 - label: Web Server Settings
   parameters:
   - master_server_flavor
@@ -112,22 +108,6 @@ parameters:
         min: 0
         max: 7
       description: Must be between 0 and 7 servers.
-
-  image:
-    label: Operating System
-    description: |
-      Required: Server image used for all servers that are created as a part of
-      this deployment.
-    type: string
-    default: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-    constraints:
-    - allowed_values:
-      - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-      - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
-      - Debian 7 (Wheezy) (PVHVM)
-      - CentOS 6 (PVHVM)
-      - Red Hat Enterprise Linux 6 (PVHVM)
-      description: Must be a supported operating system.
 
   database_server_flavor:
     label: Server Size
@@ -348,7 +328,7 @@ resources:
     properties:
       name: { get_param: database_server_hostname }
       flavor: { get_param: database_server_flavor }
-      image: { get_param: image }
+      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       key_name: { get_resource: ssh_key }
       metadata:
         rax-heat: { get_param: "OS::stack_id" }
@@ -358,7 +338,7 @@ resources:
     properties:
       name: { get_param: master_server_hostname }
       flavor: { get_param: master_server_flavor }
-      image: { get_param: image }
+      image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
       key_name: { get_resource: ssh_key }
       metadata:
         rax-heat: { get_param: "OS::stack_id" }
@@ -371,7 +351,7 @@ resources:
         type: { get_param: child_template }
         properties:
           server_hostname: { get_param: web_server_hostnames }
-          image: { get_param: image }
+          image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
           flavor: { get_param: web_server_flavor }
           domain: { get_param: domain }
           drupal_dir:

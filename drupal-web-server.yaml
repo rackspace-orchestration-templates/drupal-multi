@@ -24,13 +24,12 @@ parameters:
       Required: Server image used for all servers that are created as a part of
       this deployment.
     type: string
-    default: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+    default: Debian 7 (Wheezy) (PVHVM)
     constraints:
     - allowed_values:
       - Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
-      - Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)
       - Debian 7 (Wheezy) (PVHVM)
-      - CentOS 6 (PVHVM)
+      - CentOS 7 (PVHVM)
       - Red Hat Enterprise Linux 6 (PVHVM)
       description: Must be a supported operating system.
 
