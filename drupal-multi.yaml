@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-10-15
 
 description: |
   #### Multiple Servers
@@ -394,7 +394,6 @@ resources:
   # Chef resources
   database_server_setup:
     type: "OS::Heat::ChefSolo"
-    depends_on: database_server
     properties:
       username: root
       private_key: { get_attr: [ssh_key, private_key] }
@@ -416,17 +415,15 @@ resources:
               host: "localhost"
               password: { get_attr: [mysql_root_password, value] }
         mysql:
+          port: "3306"
           server_root_password: { get_attr: [mysql_root_password, value] }
-          server_repl_password: { get_attr: [mysql_repl_password, value] }
-          server_debian_password: { get_attr: [mysql_debian_password, value] }
-          remove_test_database: true
-          remove_anonymous_users: true
-          root_network_acl: ['10.%']
+          bind_address: { get_attr: [ database_server, networks, private, 0 ] }
+          root_network_acl: '%'
         rax:
           mysql:
             innodb_buffer_pool_mempercent: 0.6
         run_list: ["recipe[apt]",
-                   "recipe[mysql::server]",
+                   "recipe[heatmysql]",
                    "recipe[dotmy-cnf]",
                    "recipe[hollandbackup]",
                    "recipe[hollandbackup::mysqldump]",

@@ -1,6 +1,8 @@
-source "http://api.berkshelf.com"
+source "https://supermarket.chef.io/"
 
 cookbook 'apt'
+cookbook 'database'
+cookbook 'mysql2_chef_gem'
 cookbook 'drupal',
   :git => 'https://github.com/promet/drupal-cookbook'
 cookbook 'sysctl',
@@ -15,4 +17,4 @@ cookbook 'rax-firewall',
 cookbook 'lsyncd',
   :git => 'https://github.com/dgivens/chef-lsyncd.git'
 cookbook 'varnish',
-  :git => 'https://github.com/opscode-cookbooks/varnish'
+  :git => 'https://github.com/rackspace-cookbooks/varnish'

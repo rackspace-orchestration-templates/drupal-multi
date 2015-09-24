@@ -90,6 +90,13 @@ node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['rule'] = '--protocol 
 node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['ip_version'] = 4
 ```
 
+### Auto-pruning
+
+In Chef, it is generally accepted that removing node attributes does not result in their corresponding resources being proactively scrubbed from the system. However, this could be seen as irritating or even a security risk when dealing with firewall attribute rules in this cookbook. To automatically prune rules for attributes that have been removed, set the following attribute to true. This will not affect rules defined with the LWRP.
+
+```ruby
+node['iptables-ng']['auto_prune_attribute_rules'] = true
+```
 
 # Recipes
 
@@ -269,4 +276,4 @@ Contributions of any sort are very welcome!
 
 Authors: Chris Aumann
 
-Contributors: Dan Fruehauf, Nathan Williams, Christian Graf
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot
