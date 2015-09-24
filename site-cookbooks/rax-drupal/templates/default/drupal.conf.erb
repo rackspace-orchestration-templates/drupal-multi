@@ -5,9 +5,8 @@
 
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
-    Order allow,deny
+    Require all granted
     AllowOverride All
-    Allow from all
   </Directory>
 
   ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
